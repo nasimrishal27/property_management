@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="rental_lease_view_search" model="ir.ui.view">
+        <field name="name">rental.lease.view.search</field>
+        <field name="model">rental.lease</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="Rent" name="rent" domain="[('property_type', '=', 'rent')]"/>
+                <filter string="Lease" name="lease" domain="[('property_type', '=', 'lease')]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Type" name="type" context="{'group_by': 'property_type'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+    <record id="property_view_search" model="ir.ui.view">
+        <field name="name">property.view.search</field>
+        <field name="model">property.property</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter string="Can be Sold" name="can_sold" domain="[('can_sold', '=', '1')]"/>
+                <filter string="Archived" name="inactive" domain="[('active','=',False)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Country" name="country" context="{'group_by': 'country_id'}"/>
+                    <filter string="State" name="state" context="{'group_by': 'state_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+</odoo>

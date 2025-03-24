@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo noupdate="1">
+    <record id="facility1" model="property.facilities">
+        <field name="name">Residential Properties</field>
+    </record>
+    <record id="facility2" model="property.facilities">
+        <field name="name">Commercial Spaces</field>
+    </record>
+    <record id="facility3" model="property.facilities">
+        <field name="name">Industrial Properties</field>
+    </record>
+    <record id="facility4" model="property.facilities">
+        <field name="name">Co-working Spaces</field>
+    </record>
+    <record id="facility5" model="property.facilities">
+        <field name="name">Construction Equipment</field>
+    </record>
+    <record id="facility6" model="property.facilities">
+        <field name="name">Vehicles</field>
+    </record>
+    <record id="facility7" model="property.facilities">
+        <field name="name">Heavy Machinery</field>
+    </record>
+    <record id="facility8" model="property.facilities">
+        <field name="name">Medical Equipment</field>
+    </record>
+    <record id="facility9" model="property.facilities">
+        <field name="name">IT &amp; Electronics</field>
+    </record>
+    <record id="facility10" model="property.facilities">
+        <field name="name">Event Venues</field>
+    </record>
+    <record id="facility11" model="property.facilities">
+        <field name="name">Party Equipment</field>
+    </record>
+    <record id="facility12" model="property.facilities">
+        <field name="name">Catering Equipment</field>
+    </record>
+    <record id="facility13" model="property.facilities">
+        <field name="name">Self-Storage Units</field>
+    </record>
+    <record id="facility14" model="property.facilities">
+        <field name="name">Cold Storage Facilities</field>
+    </record>
+    <record id="facility15" model="property.facilities">
+        <field name="name">Shipping Containers</field>
+    </record>
+    <record id="facility16" model="property.facilities">
+        <field name="name">Parking Spaces &amp; Garages</field>
+    </record>
+    <record id="facility17" model="property.facilities">
+        <field name="name">Agricultural Land &amp; Equipment</field>
+    </record>
+    <record id="facility18" model="property.facilities">
+        <field name="name">Film &amp; Photography Studios</field>
+    </record>
+    <record id="facility19" model="property.facilities">
+        <field name="name">Sports &amp; Recreational Facilities</field>
+    </record>
+    <record id="facility20" model="property.facilities">
+        <field name="name">Centralized AC</field>
+    </record>
+    <record id="facility21" model="property.facilities">
+        <field name="name">Nearby Hospital</field>
+    </record>
+    <record id="facility22" model="property.facilities">
+        <field name="name">Nearby School</field>
+    </record>
+</odoo>

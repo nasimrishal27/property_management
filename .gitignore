@@ -1,0 +1,7 @@
+*.pyc
+__pycache__/
+.vscode/
+.idea/
+*.log
+*.swp
+odoo/addons/property_management/__pycache__/

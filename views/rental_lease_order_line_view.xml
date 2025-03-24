@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="rental_lease_record_view_tree" model="ir.ui.view">
+        <field name="name">rental.lease.record.list</field>
+        <field name="model">rental.lease.order.line</field>
+        <field name="arch" type="xml">
+            <list string="Rental/Lease Record">
+                <field name="order_id"/>
+                <field name="property_id"/>
+                <field name="quantity"/>
+                <field name="qty_invoiced" column_invisible="parent.state == 'draft'"/>
+                <field name="qty_to_invoice" column_invisible="1"/>
+                <field name="currency_id" optional="hide"/>
+                <field name="price_total"/>
+            </list>
+        </field>
+    </record>
+</odoo>

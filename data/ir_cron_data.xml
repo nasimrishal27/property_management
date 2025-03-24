@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="ir_cron_update_state" model="ir.cron">
+        <field name="name">Update state of rental/lease order</field>
+        <field name="model_id" ref="property_management.model_rental_lease"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_update_state()</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active">True</field>
+        <field name="priority">1</field>
+    </record>
+    <record id="ir_cron_payment_follow_up" model="ir.cron">
+        <field name="name">Mail: Rental/Lease Payment Follow-up</field>
+        <field name="model_id" ref="property_management.model_rental_lease"/>
+        <field name="state">code</field>
+        <field name="code">model._cron_payment_follow_up()</field>
+        <field name="user_id" ref="base.user_root"/>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="active">True</field>
+        <field name="priority">2</field>
+    </record>
+</odoo>

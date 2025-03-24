@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+    <record id="property1" model="property.property">
+        <field name="name">Car</field>
+        <field name="street">Kannur</field>
+        <field name="city">Kannur</field>
+        <field name="state_id" ref='base.state_in_kl'/>
+        <field name="zip">670702</field>
+        <field name="country_id" ref="base.in"/>
+        <field name="owner_id" ref="hr.work_contact_hne"/>
+        <field name="date">2025-01-01</field>
+        <field name="can_sold">1</field>
+        <field name="lease_amount">5000</field>
+        <field name="rent_amount">3000</field>
+    </record>
+    <record id="property2" model="property.property">
+        <field name="name">Bike</field>
+        <field name="street">Kannur</field>
+        <field name="city">Kannur</field>
+        <field name="state_id" ref='base.state_in_kl'/>
+        <field name="zip">670702</field>
+        <field name="country_id" ref="base.in"/>
+        <field name="owner_id" ref="hr.work_contact_mit"/>
+        <field name="date">2025-01-01</field>
+        <field name="can_sold">1</field>
+        <field name="lease_amount">3000</field>
+        <field name="rent_amount">2000</field>
+    </record>
+    <record id="property3" model="property.property">
+        <field name="name">Laptop</field>
+        <field name="street">Calicut</field>
+        <field name="city">Calicut</field>
+        <field name="state_id" ref='base.state_in_kl'/>
+        <field name="zip">670435</field>
+        <field name="country_id" ref="base.in"/>
+        <field name="owner_id" ref="base.res_partner_12"/>
+        <field name="date">2025-01-01</field>
+        <field name="can_sold">1</field>
+        <field name="lease_amount">2000</field>
+        <field name="rent_amount">1000</field>
+    </record>
+    <record id="property4" model="property.property">
+        <field name="name">Printer</field>
+        <field name="street">Calicut</field>
+        <field name="city">Calicut</field>
+        <field name="state_id" ref='base.state_in_kl'/>
+        <field name="zip">670435</field>
+        <field name="country_id" ref="base.in"/>
+        <field name="owner_id" ref="base.res_partner_address_15"/>
+        <field name="date">2025-01-01</field>
+        <field name="can_sold">1</field>
+        <field name="lease_amount">1000</field>
+        <field name="rent_amount">500</field>
+    </record>
+    <record id="property5" model="property.property">
+        <field name="name">Meeting Room</field>
+        <field name="street">Calicut</field>
+        <field name="city">Calicut</field>
+        <field name="state_id" ref='base.state_in_kl'/>
+        <field name="zip">670435</field>
+        <field name="country_id" ref="base.in"/>
+        <field name="owner_id" ref="hr.work_contact_jog"/>
+        <field name="date">2025-01-01</field>
+        <field name="can_sold">1</field>
+        <field name="lease_amount">10000</field>
+        <field name="rent_amount">6000</field>
+    </record>
+</odoo>
