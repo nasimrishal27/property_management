@@ -17,6 +17,7 @@ class PropertyProperty(models.Model):
                                required=True, domain="[('country_id', '=?', country_id)]")
     country_id = fields.Many2one('res.country', string='Country', ondelete='restrict',
                                  required=True)
+    company_id = fields.Many2one(comodel_name="res.company", string="Company")
     country_code = fields.Char(related='country_id.code', string="Country Code")
     image = fields.Image(string="Image")
     date = fields.Date(string="Built Date", required=True)

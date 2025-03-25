@@ -43,15 +43,14 @@ class RentalLease(models.Model):
         """ Invoice Count """
         for record in self:
             record.invoice_count = (self.env['account.move'].search_count([
-                ("partner_id", "=", record.tenant_id.id), ("move_type", "=", "out_invoice"),
-                ("invoice_origin", "=", record.name)]))
+                ("id", "=", self.order_line_ids.invoice_line_ids.move_id.ids)]))
 
     @api.depends('invoice_count', 'order_line_ids.invoice_line_ids.move_id.payment_state')
     def _compute_amount_paid(self):
         """Calculate the total amount paid for the rental order"""
         for record in self:
             invoices = self.env["account.move"].search([
-                ("invoice_origin", "=", record.name), ("move_type", "=", "out_invoice"),
+                ("id", "=", self.order_line_ids.invoice_line_ids.move_id.ids),
                 ("state", "=", "posted")])
             record.amount_paid = sum(invoice.amount_total for invoice in invoices
                                      if invoice.payment_state == 'paid')
@@ -98,7 +97,6 @@ class RentalLease(models.Model):
             raise UserError("There is no quantity to invoice for this order.")
 
         draft_invoice = self.order_line_ids.invoice_line_ids.move_id.filtered(lambda l: l.state == 'draft')
-
         if draft_invoice:
             for line in invoiceable_lines:
                 existing_line = line.invoice_line_ids.filtered(lambda l: l.move_id.id == draft_invoice.id)
@@ -206,8 +204,7 @@ class RentalLease(models.Model):
             'views': [(False, 'list'), (False, 'form')],
             'res_model': 'account.move',
             'target': "current",
-            'domain': [('partner_id', '=', self.tenant_id.id), ("move_type", "=", "out_invoice"),
-                       ("invoice_origin", "=", self.name)]
+            'domain': [("id", "=", self.order_line_ids.invoice_line_ids.move_id.ids)]
         }
 
     def _cron_update_state(self):

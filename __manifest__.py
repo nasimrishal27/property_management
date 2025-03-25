@@ -11,9 +11,9 @@
     """,
     # data files always loaded at installation
     'data': [
-        'security/ir.model.access.csv',
         'security/property_groups.xml',
         'security/property_security.xml',
+        'security/ir.model.access.csv',
 
         'data/property_demo.xml',
         'data/property_facilities_demo.xml',

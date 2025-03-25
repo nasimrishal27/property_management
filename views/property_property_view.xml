@@ -60,6 +60,7 @@
                                        options='{"no_open": True, "no_create": True}'/>
                             </div>
                             <field name="owner_id"/>
+                            <field name="facilities_ids" widget="many2many_tags"/>
                         </group>
                         <group>
                             <field name="currency_id" invisible="1"/>
@@ -67,9 +68,10 @@
                             <field name="can_sold"/>
                             <field name="lease_amount"/>
                             <field name="rent_amount"/>
+                            <field name="company_id"/>
                         </group>
                         <group>
-                            <field name="facilities_ids" widget="many2many_tags"/>
+<!--                            <field name="facilities_ids" widget="many2many_tags"/>-->
                             <field name="active" invisible="1"/>
                         </group>
                     </group>
