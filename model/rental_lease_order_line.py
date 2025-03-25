@@ -15,7 +15,6 @@ class RentalLeaseOrderLine(models.Model):
                                   ondelete='cascade', domain=[('state', '=', 'draft')])
     price_unit = fields.Monetary(string="Property Price", store=True, compute="_compute_amount")
     price_subtotal = fields.Monetary(string="Subtotal", store=True, compute='_compute_subtotal')
-    price_total = fields.Monetary(string="Total", store=True, compute="_compute_total")
     invoice_line_ids = fields.Many2many(comodel_name='account.move.line',
                                         relation='rental_lease_order_line_invoice_rel',
                                         column1='order_line_id', column2='invoice_line_id')
@@ -24,25 +23,7 @@ class RentalLeaseOrderLine(models.Model):
     qty_invoiced = fields.Float(string="Invoiced Quantity", compute='_compute_qty_invoiced',
                                 store=True)
     quantity = fields.Float(string="Quantity", digits='Product Unit of Measure', store=True)
-    qty_to_invoice = fields.Float(string="Quantity to Invoice", compute='_compute_qty_to_invoice',
-                                  store=True)
-
-    @api.depends('invoice_line_ids.quantity', 'invoice_line_ids.move_id.state')
-    def _compute_qty_invoiced(self):
-        """ Calculate Invoiced Quantity """
-        for line in self:
-            total_qty = sum(
-                invoice_line.quantity
-                for invoice_line in line.invoice_line_ids
-                if invoice_line.move_id.state != 'cancel'
-            )
-            line.qty_invoiced = total_qty
-
-    @api.depends('qty_invoiced', 'quantity')
-    def _compute_qty_to_invoice(self):
-        """ Calculate Quantity to Invoice"""
-        for line in self:
-            line.qty_to_invoice = max(line.quantity - line.qty_invoiced, 0)
+    qty_to_invoice = fields.Float(string="Quantity to Invoice")
 
     @api.depends('order_id.property_type', 'property_id', 'order_id.total_days')
     def _compute_amount(self):
@@ -65,8 +46,14 @@ class RentalLeaseOrderLine(models.Model):
             else:
                 rec.property_id.lease_amount = rec.price_unit
 
-    @api.depends('order_id.property_type', 'property_id')
-    def _compute_total(self):
-        """ Calculate Total Amount """
+    @api.depends('invoice_line_ids.quantity', 'invoice_line_ids.move_id.state')
+    def _compute_qty_invoiced(self):
+        """ Calculate Invoiced Quantity """
         for line in self:
-            line.price_total += line.price_subtotal
+            total_qty = sum(
+                invoice_line.quantity
+                for invoice_line in line.invoice_line_ids
+                if invoice_line.move_id.state != 'cancel'
+            )
+            line.qty_invoiced = total_qty
+            line.qty_to_invoice = max(line.quantity - line.qty_invoiced, 0)

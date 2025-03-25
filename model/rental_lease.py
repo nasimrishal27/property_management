@@ -20,10 +20,10 @@ class RentalLease(models.Model):
     date_start = fields.Date(string='Start Date', required=True)
     date_end = fields.Date(string='Expiration Date', tracking=True, required=True)
     total_days = fields.Integer(string="Total Days", readonly=True, store=True)
-    state = fields.Selection([("draft", "Draft"), ("confirm", "Confirmed"), ("close", "Closed"),
-                              ("return", "Return"), ("expired", "Expired")], string="state",
+    state = fields.Selection([("draft", "Draft"), ("to-approve", "To Approve"), ("confirm", "Confirmed"),
+                              ("close", "Closed"), ("return", "Return"), ("expired", "Expired")],
                              default="draft", tracking=True)
-    total_amount = fields.Monetary(string="Total Amount", compute="_compute_total")
+    total_amount = fields.Monetary(string="Total Amount", compute="_compute_total_amount")
     company_id = fields.Many2one(comodel_name="res.company", string="Company", required=True,
                                  default=lambda self: self.env.user.company_id.id)
     property_type = fields.Selection([("rent", "Rent"), ("lease", "Lease")], string="Type",
@@ -31,12 +31,17 @@ class RentalLease(models.Model):
     invoice_count = fields.Integer(string="Invoice", compute='_compute_invoice_count', store=True)
     order_line_ids = fields.One2many(comodel_name='rental.lease.order.line',
                                      inverse_name='order_id', ondelete='cascade')
+    amount_paid = fields.Integer(string="Amount Paid", compute='_compute_amount_paid', store=True)
     payment_state = fields.Selection(selection=[('draft', 'Draft'), ('not_paid', 'Not Paid'),
                                                 ('paid', 'Paid'), ('partial', 'Partial')],
-                                     string="Payment Status", store=True, default='draft',
-                                     compute="_compute_payment_state")
-    amount_paid = fields.Integer(string="Amount Paid", compute='_compute_amount_paid', store=True)
+                                     string="Payment Status", store=True, default='draft')
     amount_due = fields.Integer(string="Amount Due")
+
+    @api.depends('order_line_ids.property_id', 'property_type', 'total_days')
+    def _compute_total_amount(self):
+        """ Total Amount """
+        for order in self:
+            order.total_amount = sum(order.order_line_ids.mapped('price_subtotal'))
 
     @api.depends('order_line_ids.invoice_line_ids.move_id')
     def _compute_invoice_count(self):
@@ -55,23 +60,12 @@ class RentalLease(models.Model):
             record.amount_paid = sum(invoice.amount_total for invoice in invoices
                                      if invoice.payment_state == 'paid')
             record.amount_due = max(self.total_amount - self.amount_paid, 0)
-
-    @api.depends('amount_paid', 'total_amount')
-    def _compute_payment_state(self):
-        """Update payment state based on paid amount"""
-        for record in self:
             if record.amount_paid == 0:
                 record.payment_state = 'not_paid'
             elif record.amount_paid < record.total_amount:
                 record.payment_state = 'partial'
             else:
                 record.payment_state = 'paid'
-
-    @api.depends('order_line_ids.property_id', 'property_type', 'total_days')
-    def _compute_total(self):
-        """ Total Amount """
-        for order in self:
-            order.total_amount = sum(order.order_line_ids.mapped('price_subtotal'))
 
     @api.onchange('date_end', 'date_start')
     def _onchange_date_end(self):
@@ -91,14 +85,14 @@ class RentalLease(models.Model):
         self.ensure_one()
         invoice_obj = self.env["account.move"]
         invoice_line_obj = self.env["account.move.line"]
-        invoiceable_lines = self.order_line_ids.filtered(lambda l: l.qty_to_invoice > 0)
+        invocable_lines = self.order_line_ids.filtered(lambda l: l.qty_to_invoice > 0)
 
-        if not invoiceable_lines:
+        if not invocable_lines:
             raise UserError("There is no quantity to invoice for this order.")
 
         draft_invoice = self.order_line_ids.invoice_line_ids.move_id.filtered(lambda l: l.state == 'draft')
         if draft_invoice:
-            for line in invoiceable_lines:
+            for line in invocable_lines:
                 existing_line = line.invoice_line_ids.filtered(lambda l: l.move_id.id == draft_invoice.id)
                 if existing_line:
                     new_quantity = existing_line.quantity + line.qty_to_invoice
@@ -117,10 +111,10 @@ class RentalLease(models.Model):
             new_invoice = invoice_obj.create({
                 "partner_id": self.tenant_id.id,
                 "move_type": "out_invoice",
-                "invoice_origin": self.name })
+                "invoice_origin": self.name})
 
             invoice_lines = []
-            for line in invoiceable_lines:
+            for line in invocable_lines:
                 new_invoice_line = invoice_line_obj.create({
                     "move_id": new_invoice.id,
                     "name": f"Rent for {line.property_id.name}",
@@ -149,19 +143,26 @@ class RentalLease(models.Model):
         """ confirm button """
         if self.message_attachment_count < 1:
             raise ValidationError("Please Attachment The Supporting File")
-        self.write({'state': "confirm"})
+        if self.env.user.has_group('property_management.property_group_manager'):
+            self.write({'state': "confirm"})
+            template = self.env['mail.template'].browse(
+                self.env.ref('property_management.mail_template_rental_lease_order').id)
+            if template:
+                template.send_mail(self.id, force_send=True)
+                self.message_post_with_source(template, subject="Your Rental/Lease Order Confirmed",
+                                              message_type='comment', subtype_xmlid='mail.mt_note')
+            else:
+                raise UserError("Mail Template not found. Please check the template.")
+        else:
+            self.write({'state': "to-approve"})
         if self.property_type == 'rent':
             self.order_line_ids.mapped('property_id').write({'state': 'rented'})
         elif self.property_type == 'lease':
             self.order_line_ids.mapped('property_id').write({'state': 'leased'})
-        template = self.env['mail.template'].browse(
-            self.env.ref('property_management.mail_template_rental_lease_order').id)
-        if template:
-            template.send_mail(self.id, force_send=True)
-            self.message_post_with_source(template, subject="Your Rental/Lease Order Confirmed",
-                                          message_type='comment', subtype_xmlid='mail.mt_note')
-        else:
-            raise UserError("Mail Template not found. Please check the template.")
+
+    def action_approve(self):
+        """ approve button """
+        self.action_confirm()
 
     def action_close(self):
         """ close button """

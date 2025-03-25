@@ -23,7 +23,6 @@
 
         'views/property_facilities_view.xml',
         'views/property_property_view.xml',
-        'views/rental_lease_order_line_view.xml',
         'views/rental_lease_view.xml',
         'views/res_partner.xml',
         'views/property_search_view.xml',
