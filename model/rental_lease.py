@@ -20,9 +20,9 @@ class RentalLease(models.Model):
     date_start = fields.Date(string='Start Date', required=True)
     date_end = fields.Date(string='Expiration Date', tracking=True, required=True)
     total_days = fields.Integer(string="Total Days", readonly=True, store=True)
-    state = fields.Selection([("draft", "Draft"), ("to-approve", "To Approve"), ("confirm", "Confirmed"),
-                              ("close", "Closed"), ("return", "Return"), ("expired", "Expired")],
-                             default="draft", tracking=True)
+    state = fields.Selection([("draft", "Draft"), ("to-approve", "To Approve"),
+                              ("confirm", "Confirmed"), ("close", "Closed"), ("return", "Return"),
+                              ("expired", "Expired")], default="draft", tracking=True)
     total_amount = fields.Monetary(string="Total Amount", compute="_compute_total_amount")
     company_id = fields.Many2one(comodel_name="res.company", string="Company", required=True,
                                  default=lambda self: self.env.user.company_id.id)
@@ -90,10 +90,12 @@ class RentalLease(models.Model):
         if not invocable_lines:
             raise UserError("There is no quantity to invoice for this order.")
 
-        draft_invoice = self.order_line_ids.invoice_line_ids.move_id.filtered(lambda l: l.state == 'draft')
+        draft_invoice = self.order_line_ids.invoice_line_ids.move_id.filtered(
+            lambda l: l.state == 'draft')
         if draft_invoice:
             for line in invocable_lines:
-                existing_line = line.invoice_line_ids.filtered(lambda l: l.move_id.id == draft_invoice.id)
+                existing_line = line.invoice_line_ids.filtered(
+                    lambda l: l.move_id.id == draft_invoice.id)
                 if existing_line:
                     new_quantity = existing_line.quantity + line.qty_to_invoice
                     existing_line.write({"quantity": new_quantity})

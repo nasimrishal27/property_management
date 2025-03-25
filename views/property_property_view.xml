@@ -71,7 +71,6 @@
                             <field name="company_id"/>
                         </group>
                         <group>
-<!--                            <field name="facilities_ids" widget="many2many_tags"/>-->
                             <field name="active" invisible="1"/>
                         </group>
                     </group>
