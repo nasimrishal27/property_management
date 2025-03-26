@@ -32,7 +32,7 @@
                     <button name="action_confirm" class="oe_highlight" invisible="state != 'draft' or state == 'to-approve'"
                             string="Confirm" type="object" help="Move to Confirm state"/>
                     <button name="action_approve" class="oe_highlight" invisible="state != 'to-approve'"
-                            string="Approve" type="object" help="Approve the order"/>
+                            string="Approve" type="object" help="Approve the order" groups="property_management.property_group_manager"/>
                     <button name="action_close" class="oe_highlight" invisible="state == 'close'" string="Close"
                             type="object" help="Move to Closed state"/>
                     <button name="action_return" class="oe_highlight" invisible="state == 'return'" string="Return"
@@ -40,7 +40,7 @@
                     <button name="action_expired" class="oe_highlight" invisible="state == 'expired'" string="Expired"
                             type="object" help="Move to Expired state"/>
                     <button name="action_create_invoice" string="Create Invoice" type="object" class="btn-primary"
-                            invisible="state == 'draft' or state == 'to-approve'" groups="property_management.property_group_manager"/>
+                            invisible="state == 'draft' or state == 'to-approve'"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,confirm,close,return,expired"/>
                 </header>
                 <sheet>
