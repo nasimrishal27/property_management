@@ -29,18 +29,18 @@
                 <header>
                     <button name="action_draft" class="oe_highlight" invisible="state == 'draft'" string="Draft"
                             type="object" help="Move to Draft state"/>
-                    <button name="action_confirm" class="oe_highlight" invisible="state != 'draft' or state == 'to-approve'"
+                    <button name="action_confirm" class="oe_highlight" invisible="state != 'draft'"
                             string="Confirm" type="object" help="Move to Confirm state"/>
                     <button name="action_approve" class="oe_highlight" invisible="state != 'to-approve'"
                             string="Approve" type="object" help="Approve the order" groups="property_management.property_group_manager"/>
-                    <button name="action_close" class="oe_highlight" invisible="state == 'close'" string="Close"
+                    <button name="action_close" class="oe_highlight" invisible="state in ['draft', 'to-approve', 'close']" string="Close"
                             type="object" help="Move to Closed state"/>
-                    <button name="action_return" class="oe_highlight" invisible="state == 'return'" string="Return"
+                    <button name="action_return" class="oe_highlight" invisible="state in ['draft', 'to-approve', 'return']" string="Return"
                             type="object" help="Move to Return state"/>
-                    <button name="action_expired" class="oe_highlight" invisible="state == 'expired'" string="Expired"
+                    <button name="action_expired" class="oe_highlight" invisible="state in ['draft', 'to-approve', 'expired']" string="Expired"
                             type="object" help="Move to Expired state"/>
                     <button name="action_create_invoice" string="Create Invoice" type="object" class="btn-primary"
-                            invisible="state == 'draft' or state == 'to-approve'"/>
+                            invisible="state in ['draft', 'to-approve']"/>
                     <field name="state" widget="statusbar" statusbar_visible="draft,confirm,close,return,expired"/>
                 </header>
                 <sheet>
@@ -63,15 +63,15 @@
                     </div>
                     <group>
                         <group>
-                            <field name="tenant_id"/>
-                            <field name="property_type"/>
-                            <field name="company_id"/>
+                            <field name="tenant_id" readonly="state != 'draft'"/>
+                            <field name="property_type" readonly="state != 'draft'"/>
+                            <field name="company_id" readonly="state != 'draft'"/>
                         </group>
                         <group>
                             <field name="currency_id" invisible="1"/>
                             <field name="date_start" string="Planned Date" widget="daterange"
                                    options='{"end_date_field": "date_end", "always_range": "1"}'
-                                   required="date_start or date_end"/>
+                                   required="date_start or date_end" readonly="state != 'draft'"/>
                             <field name="total_days" force_save="1"/>
                         </group>
                     </group>

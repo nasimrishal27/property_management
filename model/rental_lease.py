@@ -150,9 +150,8 @@ class RentalLease(models.Model):
             template = self.env['mail.template'].browse(
                 self.env.ref('property_management.mail_template_rental_lease_order').id)
             if template:
-                template.send_mail(self.id, force_send=True)
-                self.message_post_with_source(template, subject="Your Rental/Lease Order Confirmed",
-                                              message_type='comment', subtype_xmlid='mail.mt_note')
+                self.message_post_with_source(template, message_type='comment',
+                                              subtype_xmlid='mail.mt_note')
             else:
                 raise UserError("Mail Template not found. Please check the template.")
         else:
@@ -173,9 +172,8 @@ class RentalLease(models.Model):
         template = self.env['mail.template'].browse(
             self.env.ref('property_management.mail_template_rental_lease_closed').id)
         if template:
-            template.send_mail(self.id, force_send=True)
-            self.message_post_with_source(template, subject="Closing of Your Order",
-                                          message_type='comment', subtype_xmlid='mail.mt_note')
+            self.message_post_with_source(template, message_type='comment',
+                                          subtype_xmlid='mail.mt_note')
         else:
             raise UserError("Mail Template not found. Please check the template.")
 
@@ -191,9 +189,8 @@ class RentalLease(models.Model):
         template = self.env['mail.template'].browse(
             self.env.ref('property_management.mail_template_rental_lease_expiry').id)
         if template:
-            template.send_mail(self.id, force_send=True)
-            self.message_post_with_source(template, subject="Your Order Has Expired",
-                                          message_type='comment', subtype_xmlid='mail.mt_note')
+            self.message_post_with_source(template, message_type='comment',
+                                          subtype_xmlid='mail.mt_note')
         else:
             raise UserError("Mail Template not found. Please check the template.")
 
@@ -221,4 +218,5 @@ class RentalLease(models.Model):
         for rec in self.search([('state', '=', 'expired')]).filtered(lambda l: l.amount_due > 0):
             template = rec.env['mail.template'].browse(
                 rec.env.ref('property_management.mail_template_rent_lease_late_payment').id)
-            template.send_mail(rec.id, force_send=True)
+            self.message_post_with_source(template, message_type='comment',
+                                          subtype_xmlid='mail.mt_note')
