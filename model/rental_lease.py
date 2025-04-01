@@ -97,8 +97,7 @@ class RentalLease(models.Model):
                 existing_line = line.invoice_line_ids.filtered(
                     lambda l: l.move_id.id == draft_invoice.id)
                 if existing_line:
-                    new_quantity = existing_line.quantity + line.qty_to_invoice
-                    existing_line.write({"quantity": new_quantity})
+                    existing_line.write({"quantity": existing_line.quantity + line.qty_to_invoice})
                     line.invoice_line_ids = [fields.Command.link(existing_line.id)]
                 else:
                     new_invoice_line = invoice_line_obj.create({
