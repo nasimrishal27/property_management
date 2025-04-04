@@ -20,6 +20,7 @@
         'data/ir_sequence.xml',
         'data/mail_template_data.xml',
         'data/ir_cron_data.xml',
+        'data/paper_format_demo.xml',
 
         'views/property_facilities_view.xml',
         'views/property_property_view.xml',
@@ -27,6 +28,11 @@
         'views/res_partner.xml',
         'views/property_search_view.xml',
         'views/property_menu_view.xml',
+
+        'report/rental_lease_reports_templates.xml',
+        'report/rental_lease_reports.xml',
+
+        'wizard/rental_lease_pdf_report_view.xml',
     ],
     'installable': True,
     'application': True,

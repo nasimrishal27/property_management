@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_rental_lease_pdf_report" model="ir.ui.view">
+        <field name="name">rental_lease_pdf_report</field>
+        <field name="model">rental.lease.pdf.report</field>
+        <field name="arch" type="xml">
+            <form string="PDF Creation">
+                <group>
+                    <group>
+                        <field name="from_date"/>
+                        <field name="to_date"/>
+                        <field name="state"/>
+                        <field name="tenant_id"/>
+                    </group>
+                    <group>
+                        <field name="owner_id"/>
+                        <field name="property_type"/>
+                        <field name="property_id"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="action_print_pdf" string="Print PDF" type="object" class="oe_highlight"/>
+                    <button name="action_back" string="Back to transfer" type="object" class="btn-danger"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

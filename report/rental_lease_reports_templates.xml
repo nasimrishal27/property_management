@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="report_rental_lease_report_details">
+        <t t-call="web.html_container">
+<!--            <t t-foreach="docs" t-as="o">-->
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <div class="text-center">
+                            <h2>Rental/Lease Report</h2>
+                        </div>
+                        <br></br>
+                        <h3>
+                            Name :
+                            <span t-field="docs.tenant_id.name"/>
+                        </h3>
+                        <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Sequence</th>
+                                        <th>Type</th>
+                                        <th>state</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-if="data.get('report')">
+                                        <t t-foreach="data.get('report')" t-as="row">
+                                            <tr>
+                                                <td><t t-esc="row[0]"/></td> <!-- Student Name -->
+                                                <td><t t-esc="row[1]"/></td> <!-- Class Name -->
+                                                <td><t t-esc="row[2]"/></td> <!-- Leave Date -->
+<!--                                                <td><t t-esc="row[3]"/></td> &lt;!&ndash; Reason &ndash;&gt;-->
+                                            </tr>
+                                        </t>
+                                    </t>
+                                </tbody>
+                            </table>
+                    </div>
+                </t>
+            </t>
+<!--        </t>-->
+    </template>
+</odoo>

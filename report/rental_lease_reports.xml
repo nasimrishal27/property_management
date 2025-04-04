@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!--    Report Function in Expense -->
+    <record id="action_rental_lease_request_report" model="ir.actions.report">
+        <field name="name">Rental/Lease Report</field>
+        <field name="model">rental.lease</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="paperformat_id" ref="property_management.paperformat_a3"/>
+        <field name="report_name">property_management.report_rental_lease_report_details</field>
+        <field name="report_file">property_management.report_rental_lease_report_details</field>
+        <field name="binding_model_id" ref="property_management.model_rental_lease"/>
+        <field name="binding_type">report</field>
+    </record>
+</odoo>

@@ -59,7 +59,7 @@ class RentalLease(models.Model):
                 ("state", "=", "posted")])
             record.amount_paid = sum(invoice.amount_total for invoice in invoices
                                      if invoice.payment_state == 'paid')
-            record.amount_due = max(self.total_amount - self.amount_paid, 0)
+            record.amount_due = max(record.total_amount - record.amount_paid, 0)
             if record.amount_paid == 0:
                 record.payment_state = 'not_paid'
             elif record.amount_paid < record.total_amount:

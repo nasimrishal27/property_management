@@ -56,3 +56,10 @@ class PropertyProperty(models.Model):
             'target': "current",
             'domain': [('order_line_ids.property_id', '=', self.id)]
         }
+
+    def unlink(self):
+        for record in self:
+            record.env['rental.lease'].search([]).mapped("order_line_ids").filtered(
+                lambda l: l.property_id == record).unlink()
+            record.env['rental.lease'].search([]).filtered(lambda l: not l.order_line_ids).unlink()
+        return super().unlink()

@@ -4,14 +4,13 @@
         <field name="name">Property</field>
         <field name="sequence">1</field>
     </record>
-    <record model="res.groups" id="property_group_user">
-        <field name="name">User</field>
+    <record model="res.groups" id="property_management_group_user">
+        <field name="name">Property User</field>
         <field name="category_id" ref="module_category_property_property"/>
-        <field name="implied_ids" eval="[fields.Command.link(ref('property_group_user'))]"/>
     </record>
-    <record model="res.groups" id="property_group_manager">
-        <field name="name">Manager</field>
+    <record model="res.groups" id="property_management_group_manager">
+        <field name="name">Property Manager</field>
         <field name="category_id" ref="module_category_property_property"/>
-        <field name="implied_ids" eval="[fields.Command.link(ref('property_group_user'))]"/>
+        <field name="implied_ids" eval="[Command.link(ref('property_management_group_user'))]"/>
     </record>
 </odoo>
