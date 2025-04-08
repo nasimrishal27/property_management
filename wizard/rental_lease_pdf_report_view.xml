@@ -10,17 +10,17 @@
                         <field name="from_date"/>
                         <field name="to_date"/>
                         <field name="state"/>
-                        <field name="tenant_id"/>
+                        <field name="tenant_ids" widget="many2many_tags"/>
                     </group>
                     <group>
-                        <field name="owner_id"/>
+                        <field name="owner_ids" widget="many2many_tags"/>
                         <field name="property_type"/>
-                        <field name="property_id"/>
+                        <field name="property_ids" widget="many2many_tags"/>
                     </group>
                 </group>
                 <footer>
                     <button name="action_print_pdf" string="Print PDF" type="object" class="oe_highlight"/>
-                    <button name="action_back" string="Cancel" type="object" class="btn-danger"/>
+                    <button special="cancel" string="Cancel" type="object" class="btn-danger"/>
                 </footer>
             </form>
         </field>
