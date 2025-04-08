@@ -1,1 +1,1 @@
-from . import rental_lease_pdf_report
+from . import rental_lease_report_wizard

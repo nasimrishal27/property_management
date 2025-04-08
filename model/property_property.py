@@ -13,10 +13,9 @@ class PropertyProperty(models.Model):
     street2 = fields.Char(string="street 2")
     zip = fields.Char(string="Zip Code", required=True)
     city = fields.Char(string="City", required=True)
-    state_id = fields.Many2one("res.country.state", string='State', ondelete='restrict',
-                               required=True, domain="[('country_id', '=?', country_id)]")
-    country_id = fields.Many2one('res.country', string='Country', ondelete='restrict',
-                                 required=True)
+    state_id = fields.Many2one("res.country.state", string='State', required=True,
+                               domain="[('country_id', '=?', country_id)]")
+    country_id = fields.Many2one('res.country', string='Country', required=True)
     company_id = fields.Many2one(comodel_name="res.company", string="Company")
     country_code = fields.Char(related='country_id.code', string="Country Code")
     image = fields.Image(string="Image")
@@ -31,9 +30,7 @@ class PropertyProperty(models.Model):
                               ('sold', 'Sold')], default='draft', tracking=1)
     description = fields.Text(string="Description")
     record_count = fields.Integer(string="Rental/Lease", compute='_compute_record_count', default=0)
-    facilities_ids = fields.Many2many(
-        'property.facilities', 'property_facilities_rel', 'property_id',
-        'facilities_id')
+    facilities_ids = fields.Many2many('property.facilities')
     active = fields.Boolean('Active', default=True,
                             help="If unchecked, it will archive property without removing it.")
 
