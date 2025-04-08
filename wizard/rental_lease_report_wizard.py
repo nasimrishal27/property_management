@@ -14,7 +14,7 @@ class RentalLeaseReportWizard(models.TransientModel):
                               ("expired", "Expired")])
     tenant_ids = fields.Many2many(comodel_name="res.partner", string="Tenant")
     owner_ids = fields.Many2many(comodel_name='res.partner', string="Owner",
-                                 relation="res_partner_rental_lease_pdf_report_owner_id_rel")
+                                 relation="res_partner_rental_lease_report_wizard_owner_id_rel")
     property_type = fields.Selection([("rent", "Rent"), ("lease", "Lease")], string="Type")
     property_ids = fields.Many2many(comodel_name='property.property', string="Property")
 

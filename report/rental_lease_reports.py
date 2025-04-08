@@ -10,7 +10,7 @@ class RentalLeaseReport(models.AbstractModel):
         docs = self.env['rental.lease'].browse(docids)
         return {
             'doc_ids': docids,
-            'doc_model': 'rental.lease.pdf.report',
+            'doc_model': 'rental.lease.report.wizard',
             'docs': docs,
             'data': data,
         }

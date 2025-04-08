@@ -144,7 +144,7 @@ class RentalLease(models.Model):
         """ confirm button """
         if self.message_attachment_count < 1:
             raise ValidationError("Please Attachment The Supporting File")
-        if self.env.user.has_group('property_management.property_group_manager'):
+        if self.env.user.has_group('property_management.property_management_group_manager'):
             self.write({'state': "confirm"})
             template = self.env['mail.template'].browse(
                 self.env.ref('property_management.mail_template_rental_lease_order').id)

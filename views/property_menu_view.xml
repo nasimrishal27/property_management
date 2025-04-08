@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <record id="rental_lease_pdf_report_action" model="ir.actions.act_window">
+    <record id="rental_lease_report_wizard_action" model="ir.actions.act_window">
         <field name="name">Rental/Lease Report</field>
-        <field name="res_model">rental.lease.pdf.report</field>
+        <field name="res_model">rental.lease.report.wizard</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>
@@ -22,7 +22,7 @@
               name="Report"
               parent="property_menu_root"
               sequence="3"
-              action="rental_lease_pdf_report_action"/>
+              action="rental_lease_report_wizard_action"/>
     <menuitem id="property_menu_action"
               name="Property"
               parent="property_configuration_menu_action"

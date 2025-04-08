@@ -32,7 +32,7 @@
         'report/rental_lease_reports_templates.xml',
         'report/rental_lease_reports.xml',
 
-        'wizard/rental_lease_pdf_report_view.xml',
+        'wizard/rental_lease_report_wizard_view.xml',
     ],
     'installable': True,
     'application': True,
