@@ -23,7 +23,7 @@ class RentalLease(models.Model):
     state = fields.Selection([("draft", "Draft"), ("to-approve", "To Approve"),
                               ("confirm", "Confirmed"), ("close", "Closed"), ("return", "Return"),
                               ("expired", "Expired")], default="draft", tracking=True)
-    total_amount = fields.Monetary(string="Total Amount", compute="_compute_total_amount")
+    total_amount = fields.Monetary(string="Total Amount", compute="_compute_total_amount", store=True)
     company_id = fields.Many2one(comodel_name="res.company", string="Company", required=True,
                                  default=lambda self: self.env.user.company_id.id)
     property_type = fields.Selection([("rent", "Rent"), ("lease", "Lease")], string="Type",

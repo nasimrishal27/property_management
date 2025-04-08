@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from odoo import api, fields, models
+from odoo import fields, models
 
 
-class RentalLeasePdfReport(models.Model):
+class RentalLeasePdfReport(models.TransientModel):
     """ model for storing rental/lease details """
     _name = "rental.lease.pdf.report"
     _description = "Rental/Lease Management PDF Report"
@@ -18,38 +18,33 @@ class RentalLeasePdfReport(models.Model):
     property_id = fields.Many2one(comodel_name='property.property', string="Property")
 
     def action_print_pdf(self):
-        """df"""
-        print('Haiii')
-        # tenant = self.tenant_id.ensure_one()
-        # query = """
-        #             SELECT *
-        #             FROM rental_lease
-        #             WHERE tenant_id = %s
-        #         """
-        # params = (self.tenant_id.id,)
-        # self.env.cr.execute(query, params)
-        # report = self.env.cr.dictfetchall()
-        #
-        # data = {
-        #     'tenant_id': tenant.name,
-        #     # 'filter_by': self.filter_by,
-        #     # 'date_from': self.date_from,
-        #     # 'date_to': self.date_to,
-        #     'report': report,
-        # }
-        # return self.env.ref('property_management.action_rental_lease_request_report').report_action(self, data=data)
-        query = """SELECT name,total_amount,type,state
-                    FROM rental_lease
-                    WHERE tenant_id = '%s'""" % self.tenant_id.id
-        # if self.from_date:
-        #     query += """ where tb.date >= '%s' and tb.date <= '%s'""" % self.from_date, %self.to_date
+        """Function for printing report"""
+        query = """SELECT r.name,p.name as partner,r.total_amount,r.property_type,r.state
+                    FROM rental_lease r join res_partner p on tenant_id = p.id
+                    join rental_lease_order_line l on l.order_id = r.id
+                    join property_property pr on l.property_id = pr.id"""
+        where_clause = ["r.company_id = %s" % self.env.company.id]
+        if self.from_date:
+            where_clause.append("date_start >= '%s'" % self.from_date)
+        if self.to_date:
+            where_clause.append("date_end <= '%s'" % self.to_date)
+        if self.state:
+            where_clause.append("state = '%s'" % self.state)
+        if self.tenant_id:
+            where_clause.append("tenant_id = %s" % self.tenant_id.id)
+        if self.owner_id:
+            where_clause.append("owner_id = %s" % self.owner_id.id)
+        if self.property_type:
+            where_clause.append("property_type = '%s'" % self.property_type)
+        if self.property_id:
+            where_clause.append("property_id = %s" % self.property_id.id)
+        if where_clause:
+            query += " WHERE " + " AND ".join(where_clause)
         self.env.cr.execute(query)
         report = self.env.cr.dictfetchall()
-        # data = {'company_id': self.env.user.company_id.id, 'report': report}
-        print(report)
-        data = {'tenant_id': self.tenant_id.id, 'report': report}
+        data = {'report': report}
         return self.env.ref('property_management.action_rental_lease_request_report').report_action(None, data=data)
 
     def action_back(self):
-        """User rejects the transfer and returns to editing."""
+        """cancel button"""
         return {'type': 'ir.actions.act_window_close'}

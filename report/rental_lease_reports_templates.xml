@@ -2,41 +2,38 @@
 <odoo>
     <template id="report_rental_lease_report_details">
         <t t-call="web.html_container">
-<!--            <t t-foreach="docs" t-as="o">-->
-                <t t-call="web.external_layout">
-                    <div class="page">
-                        <div class="text-center">
-                            <h2>Rental/Lease Report</h2>
-                        </div>
+            <t t-call="web.external_layout">
+                <div class="page">
+                    <div class="oe_structure">
+                        <h2 style="text-align: center;">Rental/Lease Report</h2>
                         <br></br>
-                        <h3>
-                            Name :
-                            <span t-field="docs.tenant_id.name"/>
-                        </h3>
                         <table class="table table-condensed">
-                                <thead>
-                                    <tr>
-                                        <th>Sequence</th>
-                                        <th>Type</th>
-                                        <th>state</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <t t-if="data.get('report')">
-                                        <t t-foreach="data.get('report')" t-as="row">
-                                            <tr>
-                                                <td><t t-esc="row[0]"/></td> <!-- Student Name -->
-                                                <td><t t-esc="row[1]"/></td> <!-- Class Name -->
-                                                <td><t t-esc="row[2]"/></td> <!-- Leave Date -->
-<!--                                                <td><t t-esc="row[3]"/></td> &lt;!&ndash; Reason &ndash;&gt;-->
-                                            </tr>
-                                        </t>
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center;"><h5 style="font-weight: bold;">Sequence</h5></th>
+                                    <th style="text-align: center;"><h5 style="font-weight: bold;">Tenant</h5></th>
+                                    <th style="text-align: center;"><h5 style="font-weight: bold;">Total Amount</h5></th>
+                                    <th style="text-align: center;"><h5 style="font-weight: bold;">Type</h5></th>
+                                    <th style="text-align: center;"><h5 style="font-weight: bold;">state</h5></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-if="data.get('report')">
+                                    <t t-foreach="data.get('report')" t-as="row">
+                                        <tr class="text-center">
+                                            <td><t t-esc="row.get('name')"/></td>
+                                            <td><t t-esc="row.get('partner')"/></td>
+                                            <td><t t-esc="row.get('total_amount')"/></td>
+                                            <td><t t-esc="row.get('property_type')"/></td>
+                                            <td><t t-esc="row.get('state')"/></td>
+                                        </tr>
                                     </t>
-                                </tbody>
-                            </table>
+                                </t>
+                            </tbody>
+                        </table>
                     </div>
-                </t>
+                </div>
             </t>
-<!--        </t>-->
+        </t>
     </template>
 </odoo>
