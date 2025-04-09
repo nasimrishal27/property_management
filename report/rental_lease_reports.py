@@ -7,10 +7,7 @@ class RentalLeaseReport(models.AbstractModel):
 
     @api.model
     def _get_report_values(self, docids, data=None):
-        docs = self.env['rental.lease'].browse(docids)
         return {
-            'doc_ids': docids,
             'doc_model': 'rental.lease.report.wizard',
-            'docs': docs,
             'data': data,
         }

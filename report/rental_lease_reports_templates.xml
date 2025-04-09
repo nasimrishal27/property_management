@@ -7,12 +7,32 @@
                     <div class="oe_structure">
                         <h2 style="text-align: center;">Rental/Lease Report</h2>
                         <br></br>
-                        <table class="table table-condensed">
+                        <table class="table table-borderless">
+                            <thead>
+                                <tr>
+                                    <th style="text-align: center;"><h5><t t-if="data.get('from_date')">
+                                                <b>From Date:</b> <t t-esc="data.get('from_date')"/>
+                                            </t></h5></th>
+                                    <th style="text-align: center;"><h5><t t-if="data.get('to_date')">
+                                                <b>To Date:</b> <t t-esc="data.get('to_date')"/>
+                                            </t></h5></th>
+                                    <th style="text-align: center;"><h5><t t-if="data.get('state')">
+                                                <b>State:</b> <t t-esc="data.get('state')"/>
+                                            </t></h5></th>
+                                    <th style="text-align: center;"><h5><t t-if="data.get('type')">
+                                                <b>Property Type:</b> <t t-esc="data.get('type')"/>
+                                            </t></h5></th>
+                                </tr>
+                            </thead>
+                        </table>
+                        <table class="table table-borderless">
                             <thead>
                                 <tr>
                                     <th style="text-align: center;"><h5 style="font-weight: bold;">Sequence</h5></th>
+                                    <th style="text-align: center;"><h5 style="font-weight: bold;">Property</h5></th>
                                     <th style="text-align: center;"><h5 style="font-weight: bold;">Tenant</h5></th>
-                                    <th style="text-align: center;"><h5 style="font-weight: bold;">Total Amount</h5></th>
+                                    <th style="text-align: center;"><h5 style="font-weight: bold;">Owner</h5></th>
+                                    <th style="text-align: center;"><h5 style="font-weight: bold;">Amount</h5></th>
                                     <th style="text-align: center;"><h5 style="font-weight: bold;">Type</h5></th>
                                     <th style="text-align: center;"><h5 style="font-weight: bold;">state</h5></th>
                                 </tr>
@@ -22,8 +42,10 @@
                                     <t t-foreach="data.get('report')" t-as="row">
                                         <tr class="text-center">
                                             <td><t t-esc="row.get('name')"/></td>
+                                            <td><t t-esc="row.get('property')"/></td>
                                             <td><t t-esc="row.get('partner')"/></td>
-                                            <td><t t-esc="row.get('total_amount')"/></td>
+                                            <td><t t-esc="row.get('owner')"/></td>
+                                            <td>$<t t-esc="row.get('price')"/></td>
                                             <td><t t-esc="row.get('property_type')"/></td>
                                             <td><t t-esc="row.get('state')"/></td>
                                         </tr>
