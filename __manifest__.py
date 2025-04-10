@@ -34,6 +34,11 @@
 
         'wizard/rental_lease_report_wizard_view.xml',
     ],
+    'assets': {
+    'web.assets_backend': [
+                'property_management/static/src/js/action_manager.js',
+            ],
+    },
     'installable': True,
     'application': True,
     'license': 'LGPL-3',

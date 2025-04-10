@@ -34,7 +34,7 @@
                                     <th style="text-align: center;"><h5 style="font-weight: bold;">Owner</h5></th>
                                     <th style="text-align: center;"><h5 style="font-weight: bold;">Amount</h5></th>
                                     <th style="text-align: center;"><h5 style="font-weight: bold;">Type</h5></th>
-                                    <th style="text-align: center;"><h5 style="font-weight: bold;">state</h5></th>
+                                    <th style="text-align: center;"><h5 style="font-weight: bold;">State</h5></th>
                                 </tr>
                             </thead>
                             <tbody>
