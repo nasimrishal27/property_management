@@ -1,20 +1,13 @@
 # -*- coding: utf-8 -*-
-import base64
-
-from odoo import fields, models
-from odoo.exceptions import ValidationError
 import io
 import json
+import base64
+from odoo import fields, models
+from odoo.exceptions import ValidationError
 import xlsxwriter
 from odoo import models
 from odoo.tools import json_default
 
-
-ORDER_STATE = [
-    ("draft", "Draft"), ("to-approve", "To Approve"), ("confirm", "Confirmed"),
-    ("close", "Closed"), ("return", "Returned"), ("expired", "Expired")
-]
-TYPE = [("rent", "Rent"), ("lease", "Lease")]
 
 class RentalLeaseReportWizard(models.TransientModel):
     """ model for storing rental/lease details """
@@ -23,11 +16,13 @@ class RentalLeaseReportWizard(models.TransientModel):
 
     from_date = fields.Date('From Date')
     to_date = fields.Date('To Date')
-    state = fields.Selection(selection=ORDER_STATE)
+    state = fields.Selection(selection=[("draft", "Draft"), ("to-approve", "To Approve"),
+                                        ("confirm", "Confirmed"), ("close", "Closed"),
+                                        ("return", "Returned"), ("expired", "Expired")])
     tenant_ids = fields.Many2many(comodel_name="res.partner", string="Tenant")
     owner_ids = fields.Many2many(comodel_name='res.partner', string="Owner",
                                  relation="res_partner_rental_lease_report_wizard_owner_id_rel")
-    property_type = fields.Selection(selection=TYPE, string="Type")
+    property_type = fields.Selection(selection=[("rent", "Rent"), ("lease", "Lease")])
     property_ids = fields.Many2many(comodel_name='property.property', string="Property")
 
     def action_print_pdf(self):
@@ -50,6 +45,7 @@ class RentalLeaseReportWizard(models.TransientModel):
         }
 
     def get_xlsx_report(self, data, response):
+        """ function to insert value to xlsx report"""
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
         sheet = workbook.add_worksheet()
@@ -59,13 +55,14 @@ class RentalLeaseReportWizard(models.TransientModel):
             {'align': 'center', 'bold': True, 'font_size': '20px'})
         txt = workbook.add_format({'font_size': '10px', 'align': 'center'})
         filter_txt = workbook.add_format({'font_size': '10px', 'align': 'left', 'bold': True})
-        wrap_format = workbook.add_format({'text_wrap': True, 'font_size': '6px', 'align': 'center', 'bold': True})
+        wrap_format = workbook.add_format({'text_wrap': True, 'font_size': '6px', 'align': 'center',
+                                           'bold': True})
         logo = self.env.company.logo
         company = self.env.company
         company_info = f"""{company.name}
-        {company.street} {company.street2}
-        {company.city}, {company.state_id.name} {company.zip}
-        {company.country_id.name}"""
+        {company.street or ''} {company.street2 or ''}
+        {company.city or ''}, {company.state_id.name or ''} {company.zip or ''}
+        {company.country_id.name or ''}"""
         if logo:
             image_stream = io.BytesIO(base64.b64decode(logo))
             image_stream.seek(0)
@@ -125,7 +122,8 @@ class RentalLeaseReportWizard(models.TransientModel):
         if self.to_date:
             if self.from_date:
                 if self.to_date < self.from_date:
-                    raise ValidationError("You can only add a 'To Date' that is greater than 'From Date'")
+                    raise ValidationError("You can only add a 'To Date' that is greater than"
+                                          "'From Date'")
             where_clause.append("date_end <= %s")
             params.append(self.to_date)
         if self.state:
@@ -149,11 +147,16 @@ class RentalLeaseReportWizard(models.TransientModel):
         report = self.env.cr.dictfetchall()
         for rec in report:
             rec['owner'] = self.env['res.partner'].browse(rec.get('owner')).name
-            rec['state'] = dict(ORDER_STATE).get(rec.get('state'))
-            rec['property_type'] = dict(TYPE).get(rec.get('property_type'))
-        data = {'from_date': self.from_date, 'to_date': self.to_date, 'state': dict(ORDER_STATE).get(self.state),
-                'type': dict(TYPE).get(self.property_type), 'report': report}
+            rec['state'] = (dict(self.env['rental.lease']._fields['state'].selection)
+                            .get(rec.get('state')))
+            rec['property_type'] = dict(self.env['rental.lease']._fields['property_type']
+                                        .selection).get(rec.get('property_type'))
+        data = {'from_date': self.from_date, 'to_date': self.to_date, 'report': report,
+                'state': dict(self.env['rental.lease']._fields['state'].selection).get(self.state),
+                'type': dict(self.env['rental.lease']._fields['property_type'].selection)
+                .get(self.property_type)}
         if report:
             return data
         else:
-            raise ValidationError("This condition is not satisfactory in any record")
+            raise ValidationError("This condition is not satisfactory in"
+                                  "any record")
