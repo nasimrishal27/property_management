@@ -1,7 +1,9 @@
+# -*- coding: utf-8 -*-
 import json
 from odoo import http
 from odoo.http import content_disposition, request
 from odoo.tools import html_escape
+
 
 class XLSXReportController(http.Controller):
     @http.route('/xlsx_reports', type='http', auth='user',
@@ -18,8 +20,7 @@ class XLSXReportController(http.Controller):
                     None,
                     headers=[('Content-Type', 'application/vnd.ms-excel'), (
                         'Content-Disposition',
-                        content_disposition(f"{report_name}.xlsx"))
-                             ]
+                        content_disposition(f"{report_name}.xlsx"))]
                 )
                 report_object.get_xlsx_report(options, response)
                 response.set_cookie('fileToken', token)

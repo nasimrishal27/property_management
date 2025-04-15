@@ -5,8 +5,8 @@ import base64
 from odoo import fields, models
 from odoo.exceptions import ValidationError
 import xlsxwriter
-from odoo import models
 from odoo.tools import json_default
+from PIL import Image
 
 
 class RentalLeaseReportWizard(models.TransientModel):
@@ -53,8 +53,9 @@ class RentalLeaseReportWizard(models.TransientModel):
             {'font_size': '12px', 'align': 'center', 'bold': True})
         head = workbook.add_format(
             {'align': 'center', 'bold': True, 'font_size': '20px'})
-        txt = workbook.add_format({'font_size': '10px', 'align': 'center'})
-        filter_txt = workbook.add_format({'font_size': '10px', 'align': 'left', 'bold': True})
+        txt = workbook.add_format({'font_size': '10px', 'align': 'left', 'indent': 1})
+        amount = workbook.add_format({'font_size': '10px', 'align': 'right', 'indent': 1})
+        filter_txt = workbook.add_format({'font_size': '10px', 'align': 'center', 'bold': True})
         wrap_format = workbook.add_format({'text_wrap': True, 'font_size': '6px', 'align': 'center',
                                            'bold': True})
         logo = self.env.company.logo
@@ -65,22 +66,25 @@ class RentalLeaseReportWizard(models.TransientModel):
         {company.country_id.name or ''}"""
         if logo:
             image_stream = io.BytesIO(base64.b64decode(logo))
+            image = Image.open(image_stream)
+            image_width, image_height = image.size
+            target_width = 70
+            target_height = 55
+            x_scale = target_width / image_width
+            y_scale = target_height / image_height
             image_stream.seek(0)
             sheet.insert_image('M2', 'logo.png', {
                 'image_data': image_stream,
-                'x_scale': 0.1,
-                'y_scale': 0.08,
+                'x_scale': x_scale,
+                'y_scale': y_scale,
             })
         sheet.merge_range('B2:K3', 'RENTAL/LEASE REPORT', head)
         sheet.merge_range('L2:N6', ' ', wrap_format)
         sheet.write('L2', company_info, wrap_format)
-        sheet.merge_range('A9:B9', 'Sequence', cell_format)
-        sheet.merge_range('C9:D9', 'Property', cell_format)
-        sheet.merge_range('E9:F9', 'Tenant', cell_format)
-        sheet.merge_range('G9:H9', 'Owner', cell_format)
-        sheet.merge_range('I9:J9', 'Amount', cell_format)
-        sheet.merge_range('K9:L9', 'Type', cell_format)
-        sheet.merge_range('M9:N9', 'State', cell_format)
+        headers = [('A9:B9', 'Sequence'), ('C9:D9', 'Property'), ('E9:F9', 'Tenant'),
+                   ('G9:H9', 'Owner'), ('I9:J9', 'Amount'), ('K9:L9', 'Type'), ('M9:N9', 'State')]
+        for cell, title in headers:
+            sheet.merge_range(cell, title, cell_format)
         filters = []
         if data.get('from_date'):
             filters.append(f"From Date: {data.get('from_date')}")
@@ -91,7 +95,7 @@ class RentalLeaseReportWizard(models.TransientModel):
         if data.get('type'):
             filters.append(f"Property Type: {data.get('type')}")
         if filters:
-            filter_text = f"{' ' * 31}".join(filters)
+            filter_text = f"{' ' * 30}".join(filters)
             sheet.merge_range('A8:N8', filter_text, filter_txt)
 
         for i, report in enumerate(data.get('report'), start=10):
@@ -99,7 +103,7 @@ class RentalLeaseReportWizard(models.TransientModel):
             sheet.merge_range(f'C{i}:D{i}', report.get('property'), txt)
             sheet.merge_range(f'E{i}:F{i}', report.get('partner'), txt)
             sheet.merge_range(f'G{i}:H{i}', report.get('owner'), txt)
-            sheet.merge_range(f'I{i}:J{i}', f"${report.get('price')}", txt)
+            sheet.merge_range(f'I{i}:J{i}', f"${report.get('price')}", amount)
             sheet.merge_range(f'K{i}:L{i}', report.get('property_type'), txt)
             sheet.merge_range(f'M{i}:N{i}', report.get('state'), txt)
         workbook.close()
@@ -142,7 +146,7 @@ class RentalLeaseReportWizard(models.TransientModel):
             where_clause.append("property_id in %s")
             params.append(tuple(self.property_ids.ids))
         if where_clause:
-            query += " WHERE " + " AND ".join(where_clause)
+            query += " WHERE " + " AND ".join(where_clause) + " ORDER BY r.name DESC"
         self.env.cr.execute(query, params)
         report = self.env.cr.dictfetchall()
         for rec in report:

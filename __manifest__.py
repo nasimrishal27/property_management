@@ -2,7 +2,7 @@
 {
     'name': "Property Management",
     'version': '1.0',
-    'depends': ['base', 'contacts', 'account', 'mail', 'hr'],
+    'depends': ['base', 'contacts', 'account', 'mail', 'hr', 'website'],
     'sequence': 1,
     'author': "Suni",
     'category': 'All',
@@ -21,6 +21,7 @@
         'data/mail_template_data.xml',
         'data/ir_cron_data.xml',
         'data/paper_format_demo.xml',
+        'data/website_menu.xml',
 
         'views/property_facilities_view.xml',
         'views/property_property_view.xml',
@@ -28,6 +29,7 @@
         'views/res_partner.xml',
         'views/property_search_view.xml',
         'views/property_menu_view.xml',
+        'views/property_management_portal_templates.xml',
 
         'report/rental_lease_reports_templates.xml',
         'report/rental_lease_reports.xml',
