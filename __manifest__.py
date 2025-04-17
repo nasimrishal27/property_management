@@ -2,7 +2,7 @@
 {
     'name': "Property Management",
     'version': '1.0',
-    'depends': ['base', 'contacts', 'account', 'mail', 'hr', 'website'],
+    'depends': ['base', 'contacts', 'account', 'mail', 'hr', 'website', 'web'],
     'sequence': 1,
     'author': "Suni",
     'category': 'All',
@@ -21,6 +21,7 @@
         'data/mail_template_data.xml',
         'data/ir_cron_data.xml',
         'data/paper_format_demo.xml',
+        'data/property_management_portal_templates.xml',
         'data/website_menu.xml',
 
         'views/property_facilities_view.xml',
@@ -29,7 +30,6 @@
         'views/res_partner.xml',
         'views/property_search_view.xml',
         'views/property_menu_view.xml',
-        'views/property_management_portal_templates.xml',
 
         'report/rental_lease_reports_templates.xml',
         'report/rental_lease_reports.xml',
@@ -37,9 +37,12 @@
         'wizard/rental_lease_report_wizard_view.xml',
     ],
     'assets': {
-    'web.assets_backend': [
+        'web.assets_backend': [
                 'property_management/static/src/js/action_manager.js',
             ],
+        'web.assets_frontend': [
+            'property_management/static/src/js/portal.js',
+        ],
     },
     'installable': True,
     'application': True,
