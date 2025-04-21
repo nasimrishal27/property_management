@@ -19,7 +19,7 @@
                                             <span class="s_website_form_label_content">Tenant Name</span>
                                         </label>
                                         <div class="col-sm">
-                                            <input id="tenant_name" type="text" class="form-control s_website_form_input" name="tenant_name" t-att-value="request.env.user.name"/>
+                                            <input id="tenant_name" type="text" class="form-control s_website_form_input" name="tenant_name" t-att-value="request.env.user.name" required="1"/>
                                         </div>
                                     </div>
                                 </div>
@@ -29,9 +29,9 @@
                                             <span class="s_website_form_label_content">Type</span>
                                         </label>
                                         <div class="col-sm">
-                                            <select class="o_import_create_option form-select w-auto bg-light" style="width:400px">
-                                                <option name="rent">Rent</option>
-                                                <option name="lease">Lease</option>
+                                            <select class="o_import_create_option form-select w-auto bg-light property-type" style="width:400px" name="property_type">
+                                                <option value="rent">Rent</option>
+                                                <option value="lease">Lease</option>
                                             </select>
                                         </div>
                                     </div>
@@ -62,7 +62,7 @@
                                             <span class="s_website_form_label_content">From Date</span>
                                         </label>
                                         <div class="col-sm">
-                                            <input id="from_date" type="date" class="form-control s_website_form_input date" name="from_date"/>
+                                            <input id="from_date" type="date" class="form-control s_website_form_input date" name="from_date" required="1"/>
                                         </div>
                                     </div>
                                 </div>
@@ -72,15 +72,15 @@
                                             <span class="s_website_form_label_content">To Date</span>
                                         </label>
                                         <div class="col-sm">
-                                            <input id="to_date" type="date" class="form-control s_website_form_input date" name="to_date"/>
+                                            <input id="to_date" type="date" class="form-control s_website_form_input date" name="to_date" required="1"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="text-center mt-5">
-                                    <h6 id="days_count" style="color: #714B67; font-weight: bold;"></h6>
+                                    <h6 id="days_count" name="days_count" style="color: #714B67; font-weight: bold;" class="days_count"></h6>
                                 </div>
                                 <div id="modal_msg" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-                                    background-color: rgba(121, 59, 91, 1); border-radius: 5px; padding: 20px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                                    background-color: #714B67; border-radius: 5px; padding: 20px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
                                     width: 40%; color: white; text-align: center;">
                                     <h4 class="modal-title" style="margin-bottom: 15px;">Choose Date Correctly</h4>
                                     <button type="button" class="btn btn-secondary" id="dismiss">Close</button>
@@ -121,19 +121,20 @@
                                                         <tbody>
                                                             <tr class="property_cost_line">
                                                                 <td>
-                                                                    <select id="property" class="o_import_create_option form-select w-auto bg-light" style="width:400px">
+                                                                    <select id="property-selection" class="o_import_create_option form-select w-auto bg-light property-selection" style="width:400px">
                                                                         <option>Select a Property</option>
                                                                         <t t-foreach="property_id" t-as="property">
-                                                                            <option><t t-esc="property.name"/></option>
+                                                                            <option t-att-value="property.id"><t t-esc="property.name"/></option>
                                                                         </t>
                                                                     </select>
                                                                 </td>
                                                                 <td>
                                                                     <input required="True"
                                                                            type="text"
-                                                                           class="form-control"
+                                                                           class="form-control days"
                                                                            name="days"
                                                                            placeholder="No of Days"
+                                                                           readonly="1"
                                                                            id="days"/>
                                                                 </td>
                                                                 <td>
@@ -147,6 +148,7 @@
                                                                                type="number"
                                                                                class="form-control rent_lease_amount"
                                                                                name="rent_lease_amount"
+                                                                               readonly="1"
                                                                                id="rent_lease_amount"/>
                                                                     </div>
 
@@ -162,6 +164,7 @@
                                                                                type="number"
                                                                                class="form-control sub_total"
                                                                                name="sub_total"
+                                                                               readonly="1"
                                                                                id="sub_total"/>
                                                                     </div>
 
@@ -177,18 +180,27 @@
 
                                                             <tr class="add_extra_property d-none">
                                                                 <td>
-                                                                    <select id="property" class="o_import_create_option form-select w-auto bg-light" style="width:400px">
-                                                                        <t t-foreach="property" t-as="p">
-                                                                            <option><t t-esc="p.name"/></option>
-                                                                        </t>
-                                                                    </select>
+<!--                                                                    <select id="property" class="o_import_create_option form-select w-auto bg-light" style="width:400px">-->
+<!--                                                                        <t t-foreach="property" t-as="p">-->
+<!--                                                                            <option><t t-esc="p.name"/></option>-->
+<!--                                                                        </t>-->
+<!--                                                                    </select>-->
+                                                                    <div class="d-flex">
+                                                                        <select id="property-selection" class="o_import_create_option form-select w-auto bg-light property-selection" style="width:400px">
+                                                                            <option>Select a Property</option>
+                                                                            <t t-foreach="property_id" t-as="property">
+                                                                                <option t-att-value="property.id"><t t-esc="property.name"/></option>
+                                                                            </t>
+                                                                        </select>
+                                                                    </div>
                                                                 </td>
                                                                 <td>
                                                                     <input required="True"
                                                                            type="text"
-                                                                           class="form-control"
+                                                                           class="form-control days"
                                                                            name="days"
                                                                            placeholder="No of Days"
+                                                                           readonly="1"
                                                                            id="days"/>
                                                                 </td>
                                                                 <td>
@@ -199,9 +211,10 @@
 
                                                                         <input required="True"
                                                                                placeholder="Rent/Lease Amount"
-                                                                               type="number"
+                                                                               type=""
                                                                                class="form-control rent_lease_amount"
                                                                                name="rent_lease_amount"
+                                                                               readonly="1"
                                                                                id="rent_lease_amount"/>
                                                                     </div>
 
@@ -217,6 +230,7 @@
                                                                                type="number"
                                                                                class="form-control sub_total"
                                                                                name="sub_total"
+                                                                               readonly="1"
                                                                                id="sub_total"/>
                                                                     </div>
 

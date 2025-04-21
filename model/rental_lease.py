@@ -19,7 +19,7 @@ class RentalLease(models.Model):
                                   default=lambda self: self.env.user.company_id.currency_id.id)
     date_start = fields.Date(string='Start Date', required=True)
     date_end = fields.Date(string='Expiration Date', tracking=True, required=True)
-    total_days = fields.Integer(string="Total Days", readonly=True, store=True)
+    total_days = fields.Integer(string="Total Days", compute="_compute_total_days", store=True)
     state = fields.Selection([("draft", "Draft"), ("to-approve", "To Approve"),
                               ("confirm", "Confirmed"), ("close", "Closed"), ("return", "Return"),
                               ("expired", "Expired")], default="draft", tracking=True)
@@ -67,11 +67,12 @@ class RentalLease(models.Model):
             else:
                 record.payment_state = 'paid'
 
-    @api.onchange('date_end', 'date_start')
-    def _onchange_date_end(self):
+    @api.depends('date_end', 'date_start')
+    def _compute_total_days(self):
         """ Calculate total no of days """
-        if self.date_end:
-            self.total_days = (self.date_end - self.date_start).days
+        for rec in self:
+            if rec.date_end:
+                rec.total_days = (rec.date_end - rec.date_start).days
 
     @api.model
     def create(self, vals):
