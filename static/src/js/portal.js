@@ -1,8 +1,6 @@
 /** @odoo-module **/
 import { rpc } from "@web/core/network/rpc";
 import publicWidget from "@web/legacy/js/public/public_widget";
-import { renderToElement } from "@web/core/utils/render";
-import { useRef, useState } from "@odoo/owl";
 
 publicWidget.registry.generic_form_data = publicWidget.Widget.extend({
    	selector: '#wrap', events: {
@@ -20,7 +18,6 @@ publicWidget.registry.generic_form_data = publicWidget.Widget.extend({
         $(ev.target).parent().parent().remove();
         this._calculateGrandTotal();
     },
-
 
     _calculateGrandTotal: function() {
         var grandTotal = 0;

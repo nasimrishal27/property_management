@@ -129,24 +129,10 @@
                                                             <td colspan="5" class="label"><strong>Order Lines</strong></td>
                                                         </tr>
                                                         <tr>
-                                                            <td>
-                                                                <strong>
-                                                                    Property
-                                                                </strong>
-                                                            </td>
-                                                            <td>
-                                                                <strong>
-                                                                    No of Days
-                                                                </strong>
-                                                            </td>
-                                                            <td>
-                                                                <strong>Rent/Lease Amount
-                                                                </strong>
-                                                            </td>
-                                                            <td>
-                                                                <strong>Sub Total
-                                                                </strong>
-                                                            </td>
+                                                            <td><strong>Property</strong></td>
+                                                            <td><strong>No of Days</strong></td>
+                                                            <td><strong>Rent/Lease Amount</strong></td>
+                                                            <td><strong>Sub Total</strong></td>
                                                             <td width="5%"></td>
                                                         </tr>
                                                     </thead>
@@ -176,24 +162,20 @@
                                                                     <div class="d-flex">
                                                                         <span class="mt-2" style="margin-right: 0.5rem !important;"
                                                                               t-esc="request.env.company.currency_id.symbol"/>
-
                                                                         <input required="True" placeholder="Rent/Lease Amount"
                                                                                type="" class="form-control rent_lease_amount"
                                                                                name="rent_lease_amount" readonly="1"
                                                                                id="rent_lease_amount"/>
                                                                     </div>
-
                                                                 </td>
                                                                 <td>
                                                                     <div class="d-flex">
                                                                         <span class="mt-2" style="margin-right: 0.5rem !important;"
                                                                               t-esc="request.env.company.currency_id.symbol"/>
-
                                                                         <input required="True" placeholder="Sub Total"
                                                                                type="number" class="form-control sub_total"
                                                                                name="sub_total" readonly="1" id="sub_total"/>
                                                                     </div>
-
                                                                 </td>
                                                                 <td>
                                                                     <button class="btn fa fa-trash-o remove_line"
@@ -246,18 +228,10 @@
                                     <table class="table mt-3 total_property_costs" id="property_table" t-ref="property_table">
                                         <thead>
                                             <tr>
-                                                <td>
-                                                    <strong>Rental/Lease Order</strong>
-                                                </td>
-                                                <td>
-                                                    <strong>Tenant</strong>
-                                                </td>
-                                                <td>
-                                                    <strong>Rent/Lease Amount</strong>
-                                                </td>
-                                                <td>
-                                                    <strong>Status</strong>
-                                                </td>
+                                                <td><strong>Rental/Lease Order</strong></td>
+                                                <td><strong>Tenant</strong></td>
+                                                <td><strong>Rent/Lease Amount</strong></td>
+                                                <td><strong>Status</strong></td>
                                             </tr>
                                         </thead>
                                         <div class="collapse">
@@ -268,9 +242,7 @@
                                                             <a t-attf-href="/my/rental-lease-orders/{{ order.id }}">
                                                                 <t t-esc="order.name"/></a>
                                                         </td>
-                                                        <td>
-                                                            <t t-esc="order.tenant_id.name"/>
-                                                        </td>
+                                                        <td><t t-esc="order.tenant_id.name"/></td>
                                                         <td>
                                                             <span class="mt-1"
                                                                   style="margin-right: 0.5rem !important;"
@@ -382,29 +354,17 @@
                                                 <th colspan="5"><h5><b>Rental/Lease Items</b></h5></th>
                                             </tr>
                                             <tr>
-                                                <td>
-                                                    <strong>Property</strong>
-                                                </td>
-                                                <td>
-                                                    <strong>No of Days</strong>
-                                                </td>
-                                                <td>
-                                                    <strong>Rent/Lease Amount</strong>
-                                                </td>
-                                                <td>
-                                                    <strong>Sub Total</strong>
-                                                </td>
+                                                <td><strong>Property</strong></td>
+                                                <td><strong>No of Days</strong></td>
+                                                <td><strong>Rent/Lease Amount</strong></td>
+                                                <td><strong>Sub Total</strong></td>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <t t-foreach="rental_lease_order.order_line_ids" t-as="item">
                                                 <tr>
-                                                    <td>
-                                                        <t t-esc="item.property_id.name"/>
-                                                    </td>
-                                                    <td>
-                                                        <t t-esc="item.quantity"/>
-                                                    </td>
+                                                    <td><t t-esc="item.property_id.name"/></td>
+                                                    <td><t t-esc="item.quantity"/></td>
                                                     <td>
                                                         <span class="mt-1"
                                                               style="margin-right: 0.5rem !important;"
@@ -444,7 +404,6 @@
             </li>
         </xpath>
     </template>
-    <!--    breadcrumbs for rent order-->
     <template id="portal_my_home_menu_rent_order"
               name="Portal layout : rent order menu entries"
               inherit_id="portal.portal_breadcrumbs" priority="60">
