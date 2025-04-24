@@ -30,6 +30,7 @@
         'views/res_partner.xml',
         'views/property_search_view.xml',
         'views/property_menu_view.xml',
+        'views/snippets/property_snippet_template.xml',
 
         'report/rental_lease_reports_templates.xml',
         'report/rental_lease_reports.xml',
@@ -42,6 +43,8 @@
             ],
         'web.assets_frontend': [
             'property_management/static/src/js/portal.js',
+            'property_management/static/src/xml/latest_property_content.xml',
+            'property_management/static/src/js/snippets.js',
         ],
     },
     'installable': True,

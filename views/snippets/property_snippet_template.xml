@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <template id="property_snippet_template_property" name="Latest Property">
+        <section class="properties_section">
+            <div class="container">
+                <div class="alert alert-info">
+                    <h4>Your Category Highlight Tab snippet will be displayed here...
+                        Please save to view the snippet
+                    </h4>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template id="latest_property_snippet" inherit_id="website.snippets"
+              name="Latest Property Snippet">
+        <xpath expr="//snippets[@id='snippet_groups']" position="inside">
+            <t t-snippet="property_management.property_snippet_template_property"
+               t-thumbnail="/property_management/static/src/img/snippets/s_dynamic_products.svg"/>
+        </xpath>
+    </template>
+    <template id="property_details">
+        <t t-call="website.layout">
+            <t t-set="title">Rental/lease-<t t-esc="property.name"/></t>
+            <div class="oe_structure"/>
+            <div class="oe_structure">
+                <div class="container">
+                    <div class="row m-3 p-3">
+                        <div class="col-sm-6">
+                            <img t-att-src="image_data_uri(property.image) if property.image else
+                                'property_management/static/src/img/preview image.jpeg'" alt="Property Image"
+                                 class="img img-fluid oe_unmovable product_detail_img w-100"/>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="card" style="border-width: thin; padding: 10px;">
+                                <h1><t t-esc="property.name"/></h1>
+                                <p>You can get everything you need for rent or lease here.</p>
+                                <p class="card-text">
+                                    <b>Rent:&#160;<t t-esc="request.env.company.currency_id.symbol"/>&#160;</b><t t-esc="property.rent_amount"/><br/>
+                                    <b>Lease:&#160;<t t-esc="request.env.company.currency_id.symbol"/>&#160;</b><t t-esc="property.lease_amount"/><br/>
+                                    <b>Owner:&#160;</b><t t-esc="property.owner_id.name"/><br/>
+                                    <b>Build Date:&#160;</b><t t-esc="property.date"/><br/>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="oe_structure"/>
+        </t>
+    </template>
+</odoo>

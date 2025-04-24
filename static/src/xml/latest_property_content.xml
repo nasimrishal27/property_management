@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--Product Category tab content template-->
+<templates xml:space="preserve">
+    <t t-name="property_management.property_data">
+        <section class="properties_section">
+            <div class="container">
+                <div class="container text-center">
+                    <h1 style="color: #714B67; margin-top: 20px">Rental/Lease Properties</h1>
+                    <p>You can get everything you need for rent or lease here.</p>
+                </div>
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-6 g-5 mt-1">
+                        <t t-foreach="result.properties" t-as="property" t-key="property.id">
+                            <div class="col">
+                                <a t-attf-href="/get_latest_properties/{{ property.id }}">
+                                    <div class="card h-100 text-center p-2">
+                                        <t t-if="property.image">
+                                            <img t-att-src="'data:image/png;base64,' + property.image"
+                                                 class="img img-fluid rotate-center"
+                                                 t-att-alt="property.name or 'Property Image'"
+                                                 loading="lazy"/>
+                                        </t>
+                                        <t t-else="">
+                                            <img src="/theme_og_store/static/src/img/default_category.svg"
+                                                 class="img img-fluid rotate-center"
+                                                 alt="Default Property Image"
+                                                 loading="lazy"/>
+                                        </t>
+                                        <div class="card-body p-2">
+                                            <b><h5 class="card-title" t-esc="property.name"/></b>
+                                            <p class="card-text" style="text-align: left">
+                                                <b>Rent: $&#160;</b><t t-esc="property.rent_amount"/><br/>
+                                                <b>Lease: $&#160;</b><t t-esc="property.lease_amount"/>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </t>
+                </div>
+            </div>
+        </section>
+    </t>
+</templates>
+
+<!--<templates id="template" xml:space="preserve">-->
+<!--    <t t-name="property_management.property_data">-->
+<!--        <div id="course_carousel" class="container carousel slide" data-bs-ride="carousel" t-att-data-bs-interval="interval">-->
+<!--            <div class="carousel-inner row w-100 mx-auto" role="listbox">-->
+<!--                <t t-foreach="result" t-as="chunk" t-key="chunk.id">-->
+<!--                        <div class="row">-->
+<!--                            <t t-foreach="chunk" t-as="item" t-key="item.id">-->
+<!--                                <div class="block span3 col-3">-->
+<!--                                    <div class="card-group">-->
+<!--                                        <div class="card">-->
+<!--                                            <img class="card-img-top" t-attf-src="data:image/png;base64,{{item.image}}"-->
+<!--                                                 style="padding: 0px; margin: 0px; height: 160px; width:305px;"/>-->
+<!--                                            <h5 class="mb-0"><t t-esc="item.name"/></h5>-->
+<!--                                            <a t-attf-href="/slides/{{item.id}}" class="btn btn-primary">Goto Courses</a>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                </div>-->
+<!--                            </t>-->
+<!--                        </div>-->
+<!--                </t>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--        <a t-attf-href="#course_carousel" class="carousel-control-prev" data-bs-slide="prev" role="button" aria-label="Previous" title="Previous">-->
+<!--            <span class="fa fa-chevron-circle-left fa-2x"/>-->
+<!--            <span class="visually-hidden">Previous</span>-->
+<!--        </a>-->
+<!--        <a t-attf-href="#course_carousel" class="carousel-control-next" data-bs-slide="next" role="button" aria-label="Next" title="Next">-->
+<!--            <span class="fa fa-chevron-circle-right fa-2x"/>-->
+<!--            <span class="visually-hidden">Next</span>-->
+<!--        </a>-->
+<!--    </t>-->
+<!--</templates>-->
