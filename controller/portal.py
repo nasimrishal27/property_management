@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from odoo import fields
-from odoo.addons.portal.controllers.portal import CustomerPortal
 from odoo import http
+from odoo.addons.portal.controllers.portal import CustomerPortal
 
 
 class PortalWebsite(http.Controller):
