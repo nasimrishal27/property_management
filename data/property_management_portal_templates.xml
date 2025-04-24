@@ -1,5 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <template id="portal_my_home_rental" name="Rental / Lease Order" customize_show="True" inherit_id="portal.portal_my_home" priority="20">
+        <xpath expr="//div[hasclass('o_portal_docs')]" position="before">
+            <t t-set="portal_client_category_enable" t-value="True"/>
+        </xpath>
+        <div id="portal_client_category" position="inside">
+            <t t-call="portal.portal_docs_entry">
+                <t t-set="icon" t-value="'/sale/static/src/img/bag.svg'"/>
+                <t t-set="title">Rental/Lease Orders</t>
+                <t t-set="url" t-value="'/my/rental-lease-orders'"/>
+                <t t-set="text">View Your Rental/Lease Orders</t>
+                <t t-set="placeholder_count" t-value="'rental_lease_count'"/>
+            </t>
+        </div>
+    </template>
     <template id="property_shop">
         <t t-call="website.layout">
             <div class="container text-center mt-3">
@@ -7,82 +21,100 @@
                 <p>You can get everything you need for rent or lease here.</p>
             </div>
             <div id="wrap" class="oe_structure oe_empty">
-                <section class="s_website_form" data-vcss="001" data-snippet="s_website_form">
-                    <div class="container shadow border rounded-3 mt-5 mb-5 p-4">
+                <section class="s_text_block pt40 pb40 o_colored_level " data-snippet="s_text_block">
+                    <div class="container shadow border rounded-3 mt-2 mb-5 p-4">
                         <h1>Customer Order</h1>
-                        <form action="/property-shop/submit" enctype="multipart/form-data" class="o_mark_required" data-mark="*" data-model_name="" data-success-page="">
-                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                        <form id="rental_lease_form" role="form">
                             <div class="s_website_form_rows row s_col_no_bgcolor mt-5">
-                                <div class="form-group col-6 s_website_form_field s_website_form_required mt-3" data-type="char" data-name="Field">
+                                <div class="form-group col-6 s_website_form_field s_website_form_required mt-3"
+                                     data-type="char" data-name="Field">
                                     <div class="row s_col_no_resize s_col_no_bgcolor">
-                                        <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="studio1">
+                                        <label class="col-form-label col-sm-auto s_website_form_label"
+                                               style="width: 200px" for="studio1">
                                             <span class="s_website_form_label_content">Tenant Name</span>
                                         </label>
                                         <div class="col-sm">
-                                            <input id="tenant_name" type="text" class="form-control s_website_form_input" name="tenant_name" t-att-value="request.env.user.name" required="1"/>
+                                            <input id="tenant_name" type="text" class="form-control s_website_form_input"
+                                                   name="tenant_name" t-att-value="request.env.user.name" required="1"/>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group col-6 s_website_form_field s_website_form_required mt-3" data-type="char" data-name="Field">
+                                <div class="form-group col-6 s_website_form_field s_website_form_required mt-3"
+                                     data-type="char" data-name="Field">
                                     <div class="row s_col_no_resize s_col_no_bgcolor">
-                                        <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="studio1">
+                                        <label class="col-form-label col-sm-auto s_website_form_label"
+                                               style="width: 200px" for="studio1">
                                             <span class="s_website_form_label_content">Type</span>
                                         </label>
                                         <div class="col-sm">
-                                            <select class="o_import_create_option form-select w-auto bg-light property-type" style="width:400px" name="property_type">
+                                            <select class="o_import_create_option form-select w-auto bg-light property_type"
+                                                    style="width:400px" name="property_type">
                                                 <option value="rent">Rent</option>
                                                 <option value="lease">Lease</option>
                                             </select>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group col-6 s_website_form_field s_website_form_required mt-3" data-type="char" data-name="Field">
+                                <div class="form-group col-6 s_website_form_field s_website_form_required mt-3"
+                                     data-type="char" data-name="Field">
                                     <div class="row s_col_no_resize s_col_no_bgcolor">
-                                        <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="studio1">
+                                        <label class="col-form-label col-sm-auto s_website_form_label"
+                                               style="width: 200px" for="studio1">
                                             <span class="s_website_form_label_content">Phone</span>
                                         </label>
                                         <div class="col-sm">
-                                            <input id="phone" type="text" class="form-control s_website_form_input" name="phone" t-att-value="request.env.user.phone"/>
+                                            <input id="phone" type="text" class="form-control s_website_form_input"
+                                                   name="phone" t-att-value="request.env.user.phone"/>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group col-6 s_website_form_field s_website_form_required mt-3" data-type="char" data-name="Field">
+                                <div class="form-group col-6 s_website_form_field s_website_form_required mt-3"
+                                     data-type="char" data-name="Field">
                                     <div class="row s_col_no_resize s_col_no_bgcolor">
-                                        <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="studio1">
-                                            <span class="s_website_form_label_content">Email</span>
-                                        </label>
-                                        <div class="col-sm">
-                                            <input id="email" type="email" class="form-control s_website_form_input" name="email" t-att-value="request.env.user.email"/>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="form-group col-6 s_website_form_field s_website_form_required mt-3" data-type="char" data-name="Field">
-                                    <div class="row s_col_no_resize s_col_no_bgcolor">
-                                        <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="studio1">
+                                        <label class="col-form-label col-sm-auto s_website_form_label"
+                                               style="width: 200px" for="studio1">
                                             <span class="s_website_form_label_content">From Date</span>
                                         </label>
                                         <div class="col-sm">
-                                            <input id="from_date" type="date" class="form-control s_website_form_input date" name="from_date" required="1"/>
+                                            <input id="from_date" type="date" class="form-control s_website_form_input date"
+                                                   name="from_date" required="1"/>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group col-6 s_website_form_field s_website_form_required mt-3" data-type="char" data-name="Field">
+                                <div class="form-group col-6 s_website_form_field s_website_form_required mt-3"
+                                     data-type="char" data-name="Field">
                                     <div class="row s_col_no_resize s_col_no_bgcolor">
-                                        <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="studio1">
+                                        <label class="col-form-label col-sm-auto s_website_form_label"
+                                               style="width: 200px" for="studio1">
+                                            <span class="s_website_form_label_content">Email</span>
+                                        </label>
+                                        <div class="col-sm">
+                                            <input id="email" type="email" class="form-control s_website_form_input"
+                                                   name="email" t-att-value="request.env.user.email"/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-6 s_website_form_field s_website_form_required mt-3"
+                                     data-type="char" data-name="Field">
+                                    <div class="row s_col_no_resize s_col_no_bgcolor">
+                                        <label class="col-form-label col-sm-auto s_website_form_label"
+                                               style="width: 200px" for="studio1">
                                             <span class="s_website_form_label_content">To Date</span>
                                         </label>
                                         <div class="col-sm">
-                                            <input id="to_date" type="date" class="form-control s_website_form_input date" name="to_date" required="1"/>
+                                            <input id="to_date" type="date" class="form-control s_website_form_input date"
+                                                   name="to_date" required="1"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="text-center mt-5">
-                                    <h6 id="days_count" name="days_count" style="color: #714B67; font-weight: bold;" class="days_count"></h6>
+                                    <h6 id="days_count" name="days_count" style="color: #714B67; font-weight: bold;"
+                                        class="days_count"/>
                                 </div>
                                 <div id="modal_msg" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
                                     background-color: #714B67; border-radius: 5px; padding: 20px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
                                     width: 40%; color: white; text-align: center;">
-                                    <h4 class="modal-title" style="margin-bottom: 15px;">Choose Date Correctly</h4>
+                                    <h4 class="modal-title" style="margin-bottom: 15px;"/>
                                     <button type="button" class="btn btn-secondary" id="dismiss">Close</button>
                                 </div>
                                 <div class="form-group m-3">
@@ -90,7 +122,8 @@
                                          style="width:99%;">
                                         <div class="form-group col-12 show_total_project">
                                             <div class="row s_col_no_resize s_col_no_bgcolor">
-                                                <table class="table mt-3 total_property_costs" id="property_table" t-ref="property_table">
+                                                <table class="table mt-3 total_property_costs" id="property_table"
+                                                       t-ref="property_table">
                                                     <thead>
                                                         <tr>
                                                             <td colspan="5" class="label"><strong>Order Lines</strong></td>
@@ -119,149 +152,72 @@
                                                     </thead>
                                                     <div class="collapse">
                                                         <tbody>
-                                                            <tr class="property_cost_line">
-                                                                <td>
-                                                                    <select id="property-selection" class="o_import_create_option form-select w-auto bg-light property-selection" style="width:400px">
-                                                                        <option>Select a Property</option>
-                                                                        <t t-foreach="property_id" t-as="property">
-                                                                            <option t-att-value="property.id"><t t-esc="property.name"/></option>
-                                                                        </t>
-                                                                    </select>
-                                                                </td>
-                                                                <td>
-                                                                    <input required="True"
-                                                                           type="text"
-                                                                           class="form-control days"
-                                                                           name="days"
-                                                                           placeholder="No of Days"
-                                                                           readonly="1"
-                                                                           id="days"/>
-                                                                </td>
-                                                                <td>
-                                                                    <div class="d-flex">
-                                                                        <span class="mt-2"
-                                                                              style="margin-right: 0.5rem !important;"
-                                                                              t-esc="request.env.company.currency_id.symbol"/>
-
-                                                                        <input required="True"
-                                                                               placeholder="Rent/Lease Amount"
-                                                                               type="number"
-                                                                               class="form-control rent_lease_amount"
-                                                                               name="rent_lease_amount"
-                                                                               readonly="1"
-                                                                               id="rent_lease_amount"/>
-                                                                    </div>
-
-                                                                </td>
-                                                                <td>
-                                                                    <div class="d-flex">
-                                                                        <span class="mt-2"
-                                                                              style="margin-right: 0.5rem !important;"
-                                                                              t-esc="request.env.company.currency_id.symbol"/>
-
-                                                                        <input required="True"
-                                                                               placeholder="Sub Total"
-                                                                               type="number"
-                                                                               class="form-control sub_total"
-                                                                               name="sub_total"
-                                                                               readonly="1"
-                                                                               id="sub_total"/>
-                                                                    </div>
-
-                                                                </td>
-                                                                <td>
-                                                                    <button class="btn fa fa-trash-o remove_line"
-                                                                            style="color: red; padding: 0px; margin-left: -6px; margin-top: 6px;margin-bottom:15px;"
-                                                                            name="delete"
-                                                                            aria-label="Delete row 1"></button>
-                                                                </td>
-                                                            </tr>
-
-
                                                             <tr class="add_extra_property d-none">
                                                                 <td>
-<!--                                                                    <select id="property" class="o_import_create_option form-select w-auto bg-light" style="width:400px">-->
-<!--                                                                        <t t-foreach="property" t-as="p">-->
-<!--                                                                            <option><t t-esc="p.name"/></option>-->
-<!--                                                                        </t>-->
-<!--                                                                    </select>-->
                                                                     <div class="d-flex">
-                                                                        <select id="property-selection" class="o_import_create_option form-select w-auto bg-light property-selection" style="width:400px">
+                                                                        <select id="property-selection" name="property-selection"
+                                                                                class="o_import_create_option form-select w-auto bg-light property-selection"
+                                                                                style="width:400px">
                                                                             <option>Select a Property</option>
                                                                             <t t-foreach="property_id" t-as="property">
-                                                                                <option t-att-value="property.id"><t t-esc="property.name"/></option>
+                                                                                <option t-att-value="property.id">
+                                                                                    <t t-esc="property.name"/>
+                                                                                </option>
                                                                             </t>
                                                                         </select>
                                                                     </div>
                                                                 </td>
                                                                 <td>
-                                                                    <input required="True"
-                                                                           type="text"
-                                                                           class="form-control days"
-                                                                           name="days"
-                                                                           placeholder="No of Days"
-                                                                           readonly="1"
-                                                                           id="days"/>
+                                                                    <input required="True" type="text" class="form-control days"
+                                                                           name="days" placeholder="No of Days"
+                                                                           readonly="1" id="days"/>
                                                                 </td>
                                                                 <td>
                                                                     <div class="d-flex">
-                                                                        <span class="mt-2"
-                                                                              style="margin-right: 0.5rem !important;"
+                                                                        <span class="mt-2" style="margin-right: 0.5rem !important;"
                                                                               t-esc="request.env.company.currency_id.symbol"/>
 
-                                                                        <input required="True"
-                                                                               placeholder="Rent/Lease Amount"
-                                                                               type=""
-                                                                               class="form-control rent_lease_amount"
-                                                                               name="rent_lease_amount"
-                                                                               readonly="1"
+                                                                        <input required="True" placeholder="Rent/Lease Amount"
+                                                                               type="" class="form-control rent_lease_amount"
+                                                                               name="rent_lease_amount" readonly="1"
                                                                                id="rent_lease_amount"/>
                                                                     </div>
 
                                                                 </td>
                                                                 <td>
                                                                     <div class="d-flex">
-                                                                        <span class="mt-2"
-                                                                              style="margin-right: 0.5rem !important;"
+                                                                        <span class="mt-2" style="margin-right: 0.5rem !important;"
                                                                               t-esc="request.env.company.currency_id.symbol"/>
 
-                                                                        <input required="True"
-                                                                               placeholder="Sub Total"
-                                                                               type="number"
-                                                                               class="form-control sub_total"
-                                                                               name="sub_total"
-                                                                               readonly="1"
-                                                                               id="sub_total"/>
+                                                                        <input required="True" placeholder="Sub Total"
+                                                                               type="number" class="form-control sub_total"
+                                                                               name="sub_total" readonly="1" id="sub_total"/>
                                                                     </div>
 
                                                                 </td>
                                                                 <td>
                                                                     <button class="btn fa fa-trash-o remove_line"
                                                                             style="color: red; padding: 0px; margin-left: -6px; margin-top: 6px;margin-bottom:15px;"
-                                                                            name="delete"
-                                                                            aria-label="Delete row 1"></button>
+                                                                            name="delete" aria-label="Delete row 1"/>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
                                                     </div>
                                                 </table>
+                                                <div id="grand_total" class="mt-3 fw-bold text-end" style="font-size: 18px;"
+                                                     t-att-data-currency-symbol="request.env.company.currency_id.symbol">
+                                                </div>
                                             </div>
-                                            <textarea class="d-none"
-                                                      name="order_line_ids">
-                                            </textarea>
-                                            <button type="button"
-                                                    class="btn btn-info add_total_property button-color"
-                                                    style="float: right; margin-right: -15px;">
-                                                <i class="fa fa-plus"/>
-                                            </button>
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="form-group col-12 s_website_form_submit mb-3" data-name="Submit Button">
                                     <div class="row">
                                         <div class="col-sm mt-4 text-center">
-                                            <button type="submit" class="btn custom_create btn-primary o_website_form_send">Submit
+                                            <button type="button" class="btn btn-primary add_total_property button-color">
+                                                Add Property
+                                            </button>
+                                            <button type="submit" class="btn record_create btn-primary o_website_form_send">Submit
                                             </button>
                                         </div>
                                     </div>
@@ -272,5 +228,236 @@
                 </section>
             </div>
         </t>
+    </template>
+    <template id="rental_lease_orders">
+        <t t-call="portal.portal_layout">
+            <t t-set="title">Rental/Lease Orders</t>
+            <div class="container text-center mt-3">
+                <h1 style="color: #714B67;">Your Rental/Lease Orders</h1>
+                <p>Thankyou for your business.</p>
+            </div>
+            <div class="oe_structure"/>
+            <div class="oe_structure">
+                <div class="container shadow border rounded-3 mt-5 mb-5 p-4">
+                    <div class="form-group m-3">
+                        <div class='row ml-1' style="width:99%;">
+                            <div class="form-group col-12 show_total_project">
+                                <div class="row s_col_no_resize s_col_no_bgcolor">
+                                    <table class="table mt-3 total_property_costs" id="property_table" t-ref="property_table">
+                                        <thead>
+                                            <tr>
+                                                <td>
+                                                    <strong>Rental/Lease Order</strong>
+                                                </td>
+                                                <td>
+                                                    <strong>Tenant</strong>
+                                                </td>
+                                                <td>
+                                                    <strong>Rent/Lease Amount</strong>
+                                                </td>
+                                                <td>
+                                                    <strong>Status</strong>
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                        <div class="collapse">
+                                            <tbody>
+                                                <t t-foreach="order_ids" t-as="order">
+                                                    <tr>
+                                                        <td>
+                                                            <a t-attf-href="/my/rental-lease-orders/{{ order.id }}">
+                                                                <t t-esc="order.name"/></a>
+                                                        </td>
+                                                        <td>
+                                                            <t t-esc="order.tenant_id.name"/>
+                                                        </td>
+                                                        <td>
+                                                            <span class="mt-1"
+                                                                  style="margin-right: 0.5rem !important;"
+                                                                  t-esc="request.env.company.currency_id.symbol"/>
+                                                            <t t-esc="order.total_amount"/>
+                                                        </td>
+                                                        <td>
+                                                            <t t-esc="dict(request.env['rental.lease']._fields['state'].selection).get(order.state)"/>
+                                                        </td>
+                                                    </tr>
+                                                </t>
+                                            </tbody>
+                                        </div>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="oe_structure"/>
+        </t>
+    </template>
+    <template id="property_thankyou">
+        <t t-call="website.layout">
+            <div id="wrap" class="oe_structure oe_empty">
+                <section class="s_text_block pt40 pb40 o_colored_level " data-snippet="s_text_block">
+                    <div class="container s_allow_columns">
+                        <t t-set="breadcrumbs_searchbar" t-value="True"/>
+                        <div class="row">
+                            <div class="col-lg-6 offset-lg-1 text-center">
+                                <div class="d-inline-block mx-auto p-4">
+                                    <i class="fa fa-paper-plane fa-2x mb-3 rounded-circle text-bg-success" role="presentation"/>
+                                    <h1 class="fw-bolder">Thank You!</h1>
+                                    <p class="lead mb-0">Your Order has been recorded.</p>
+                                    <p class="lead">We will get back to you shortly.</p>
+                                    <a href="/">Go to Homepage</a>
+                                </div>
+                            </div>
+                            <div class="col-lg-4 offset-lg-1">
+                                <h5>My Company</h5>
+                                <ul class="list-unstyled mb-0 ps-2">
+                                    <li><i class="fa fa-map-marker fa-fw me-2"/><span class="o_force_ltr">3575 Fake Buena Vista Avenue</span></li>
+                                    <li><i class="fa fa-phone fa-fw me-2"/><span class="o_force_ltr">+1 555-555-5556</span></li>
+                                    <li><i class="fa fa-1x fa-fw fa-envelope me-2"/><span>info@yourcompany.example.com</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </t>
+    </template>
+    <template id="rental_lease_order_portal_template">
+        <t t-call="portal.portal_layout">
+            <t t-set="title">Rental/Lease Orders</t>
+            <div class="container text-center mt-3">
+                <h1 style="color: #714B67;">Your Rental/Lease Order</h1>
+                <p>Thankyou for your business.</p>
+            </div>
+            <div class="oe_structure"/>
+            <div class="oe_structure">
+                <div class="container mt-5 mb-5 p-4" style="position: relative;">
+                    <div class="position-absolute top-0 end-0 m-4">
+                        <t t-if="rental_lease_order.state == 'draft'">
+                            <span class="badge bg-secondary"><h6 style="font-weight:bold;">Draft</h6></span>
+                        </t>
+                        <t t-if="rental_lease_order.state == 'to-approve'">
+                            <span class="badge bg-warning text-dark"><h6 style="font-weight:bold;">To Approve</h6></span>
+                        </t>
+                        <t t-if="rental_lease_order.state == 'confirm'">
+                            <span class="badge bg-primary"><h6 style="font-weight:bold;">Confirmed</h6></span>
+                        </t>
+                        <t t-if="rental_lease_order.state == 'close'">
+                            <span class="badge bg-success"><h6 style="font-weight:bold;">Closed</h6></span>
+                        </t>
+                        <t t-if="rental_lease_order.state == 'return'">
+                            <span class="badge bg-info text-dark"><h6 style="font-weight:bold;">Return</h6></span>
+                        </t>
+                        <t t-if="rental_lease_order.state == 'expired'">
+                            <span class="badge bg-danger"><h6 style="font-weight:bold;">Expired</h6></span>
+                        </t>
+                    </div>
+                    <div class="form-group m-3">
+                        <div class='row ml-1' style="width:99%;">
+                            <div class="form-group col-12 show_total_project">
+                                <div class="row s_col_no_resize s_col_no_bgcolor">
+                                    <div class="container text-left mt-3">
+                                        <h3 style="color: #714B67;">Rental/Lease Order -&amp;nbsp;<t t-esc="rental_lease_order.name"/></h3>
+                                        <h5>Order Information</h5>
+                                        <hr class="mt-1 mb-2"/>
+                                        <div class="d-flex justify-content-between p-3">
+                                            <div>
+                                                <h6><strong>Tenant Name:&amp;nbsp;</strong><t t-esc="rental_lease_order.tenant_id.name"/></h6>
+                                                <h6><strong>Email:&amp;nbsp;</strong> <t t-esc="rental_lease_order.tenant_id.email"/></h6>
+                                                <h6><strong>Property Type:&amp;nbsp;</strong>
+                                                    <t t-esc="dict(request.env['rental.lease']._fields['property_type'].selection).get(rental_lease_order.property_type)"/>
+                                                </h6>
+                                            </div>
+                                            <div>
+                                                <h6><strong>Start Date:&amp;nbsp;</strong> <t t-esc="rental_lease_order.date_start"/></h6>
+                                                <h6><strong>End Date:&amp;nbsp;</strong> <t t-esc="rental_lease_order.date_end"/></h6>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <table class="table mt-3 total_property_costs" id="property_table" t-ref="property_table">
+                                        <thead>
+                                            <tr class="text-center">
+                                                <th colspan="5"><h5><b>Rental/Lease Items</b></h5></th>
+                                            </tr>
+                                            <tr>
+                                                <td>
+                                                    <strong>Property</strong>
+                                                </td>
+                                                <td>
+                                                    <strong>No of Days</strong>
+                                                </td>
+                                                <td>
+                                                    <strong>Rent/Lease Amount</strong>
+                                                </td>
+                                                <td>
+                                                    <strong>Sub Total</strong>
+                                                </td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="rental_lease_order.order_line_ids" t-as="item">
+                                                <tr>
+                                                    <td>
+                                                        <t t-esc="item.property_id.name"/>
+                                                    </td>
+                                                    <td>
+                                                        <t t-esc="item.quantity"/>
+                                                    </td>
+                                                    <td>
+                                                        <span class="mt-1"
+                                                              style="margin-right: 0.5rem !important;"
+                                                              t-esc="request.env.company.currency_id.symbol"/>
+                                                        <t t-esc="item.price_unit"/>
+                                                    </td>
+                                                    <td>
+                                                        <span class="mt-1"
+                                                              style="margin-right: 0.5rem !important;"
+                                                              t-esc="request.env.company.currency_id.symbol"/>
+                                                        <t t-esc="item.price_subtotal"/>
+                                                    </td>
+                                                </tr>
+                                            </t>
+                                            <tr class="text-end">
+                                                <th colspan="4">Total :&amp;nbsp;&amp;nbsp;<span class="mt-1"
+                                                          style="margin-right: 0.5rem !important;"
+                                                          t-esc="request.env.company.currency_id.symbol"/><t t-esc="rental_lease_order.total_amount"/></th>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+    <template id="portal_my_home_menu_rent_orders_list"
+              name="Portal layout : rent order menu entries"
+              inherit_id="portal.portal_breadcrumbs" priority="60">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'order-ids'"
+                t-attf-class="breadcrumb-item #{'active ' if not order_ids else ''}">
+                <span>Rent Orders</span>
+            </li>
+        </xpath>
+    </template>
+    <!--    breadcrumbs for rent order-->
+    <template id="portal_my_home_menu_rent_order"
+              name="Portal layout : rent order menu entries"
+              inherit_id="portal.portal_breadcrumbs" priority="60">
+        <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">
+            <li t-if="page_name == 'rental-lease-order'"
+                t-attf-class="breadcrumb-item #{'active ' if not order_ids else ''}">
+                <a t-if="rental_lease_order" t-attf-href="/my/rental-lease-orders?{{ keep_query() }}">Rent Orders</a>
+                <t t-else="">Rent Orders</t>
+            </li>
+            <li t-if="rental_lease_order" class="breadcrumb-item active">
+                Rent Order-
+                <t t-out="rental_lease_order.name"/>
+            </li>
+        </xpath>
     </template>
 </odoo>

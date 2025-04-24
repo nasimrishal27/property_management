@@ -4,9 +4,14 @@
         <field name="name">Property</field>
         <field name="sequence">1</field>
     </record>
+    <record model="res.groups" id="property_management_group_portal">
+        <field name="name">Property Portal User</field>
+        <field name="category_id" ref="module_category_property_property"/>
+    </record>
     <record model="res.groups" id="property_management_group_user">
         <field name="name">Property User</field>
         <field name="category_id" ref="module_category_property_property"/>
+        <field name="implied_ids" eval="[Command.link(ref('property_management_group_portal'))]"/>
     </record>
     <record model="res.groups" id="property_management_group_manager">
         <field name="name">Property Manager</field>
