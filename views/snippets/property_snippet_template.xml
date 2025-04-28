@@ -24,21 +24,68 @@
             <div class="oe_structure"/>
             <div class="oe_structure">
                 <div class="container">
+                    <div class="container text-center">
+                        <h1 style="color: #714B67; margin-top: 20px">Rental/Lease Property</h1>
+                    </div>
                     <div class="row m-3 p-3">
                         <div class="col-sm-6">
-                            <img t-att-src="image_data_uri(property.image) if property.image else
-                                'property_management/static/src/img/preview image.jpeg'" alt="Property Image"
-                                 class="img img-fluid oe_unmovable product_detail_img w-100"/>
+                            <t t-if="property.image">
+                                <img t-att-src="image_data_uri(property.image)" alt="Property Image"
+                                     class="img img-fluid oe_unmovable product_detail_img w-100"/>
+                            </t>
+                            <t t-else="">
+                                <img src="/property_management/static/src/img/image.jpeg"
+                                     alt="Default Property Image"
+                                     class="img img-fluid oe_unmovable product_detail_img w-100"/>
+                            </t>
                         </div>
                         <div class="col-sm-6">
-                            <div class="card" style="border-width: thin; padding: 10px;">
-                                <h1><t t-esc="property.name"/></h1>
-                                <p>You can get everything you need for rent or lease here.</p>
+                            <div class="card p-3" style="border-width: thin;">
+                                <div class="text-end">
+                                    <t t-if="property.state == 'draft'">
+                                        <span class="badge bg-success pt-3"><h6 style="font-weight:bold;">Draft</h6></span>
+                                    </t>
+                                    <t t-if="property.state == 'rented'">
+                                        <span class="badge bg-warning text-dark pt-3"><h6 style="font-weight:bold;">Rented</h6></span>
+                                    </t>
+                                    <t t-if="property.state == 'leased'">
+                                        <span class="badge bg-warning text-dark pt-3"><h6 style="font-weight:bold;">Leased</h6></span>
+                                    </t>
+                                    <t t-if="property.state == 'sold'">
+                                        <span class="badge bg-danger pt-3"><h6 style="font-weight:bold;">Sold</h6></span>
+                                    </t>
+                                </div>
+                                <h1 class="card-title" t-esc="property.name"/>
+                                <p class="text-muted">You can get everything you need for rent or lease here.</p>
                                 <p class="card-text">
-                                    <b>Rent:&#160;<t t-esc="request.env.company.currency_id.symbol"/>&#160;</b><t t-esc="property.rent_amount"/><br/>
-                                    <b>Lease:&#160;<t t-esc="request.env.company.currency_id.symbol"/>&#160;</b><t t-esc="property.lease_amount"/><br/>
-                                    <b>Owner:&#160;</b><t t-esc="property.owner_id.name"/><br/>
-                                    <b>Build Date:&#160;</b><t t-esc="property.date"/><br/>
+                                    <b>Rent: </b>
+                                    <span>
+                                        <t t-esc="request.env.company.currency_id.symbol" />&#160;
+                                        <t t-esc="property.rent_amount" />
+                                    </span>
+                                    <br/>
+                                    <b>Lease: </b>
+                                    <span>
+                                        <t t-esc="request.env.company.currency_id.symbol" />&#160;
+                                        <t t-esc="property.lease_amount" />
+                                    </span>
+                                    <br/>
+                                    <b>Owner: </b>
+                                    <span><t t-esc="property.owner_id.name" /></span>
+                                    <br/>
+                                    <b>Build Date: </b>
+                                    <span><t t-esc="property.date" /></span>
+                                    <br/>
+                                    <b>Facilities</b>
+                                    <t t-set="badge_colors" t-value="['primary', 'success', 'info', 'warning', 'danger', 'secondary']"/>
+                                    <div class="d-flex flex-wrap gap-2">
+                                        <t t-foreach="enumerate(property.facilities_ids)" t-as="tag_info">
+                                            <t t-set="one_tag" t-value="tag_info[1]"/>
+                                            <t t-set="index" t-value="tag_info[0]"/>
+                                            <t t-set="color_class" t-value="'bg-' + badge_colors[index % len(badge_colors)]"/>
+                                            <span t-attf-class="badge #{color_class}"><t t-esc="one_tag.name" /></span>
+                                        </t>
+                                    </div>
                                 </p>
                             </div>
                         </div>

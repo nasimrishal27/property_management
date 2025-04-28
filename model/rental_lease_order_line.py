@@ -14,7 +14,7 @@ class RentalLeaseOrderLine(models.Model):
     property_id = fields.Many2one(comodel_name='property.property', string="Property",
                                   domain=[('state', '=', 'draft')])
     price_unit = fields.Monetary(string="Property Price", compute="_compute_amount")
-    price_subtotal = fields.Monetary(string="Subtotal", compute='_compute_subtotal')
+    price_subtotal = fields.Monetary(string="Subtotal", store=True, compute='_compute_subtotal')
     invoice_line_ids = fields.Many2many(comodel_name='account.move.line',
                                         relation='rental_lease_order_line_invoice_rel',
                                         column1='order_line_id', column2='invoice_line_id')

@@ -112,8 +112,8 @@
                                         class="days_count"/>
                                 </div>
                                 <div id="modal_msg" style="display: none; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
-                                    background-color: #714B67; border-radius: 5px; padding: 20px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-                                    width: 40%; color: white; text-align: center;">
+    background-color: #d2c6ce; border: 3px solid #714B67; border-radius: 5px; padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); width: 40%; color: #714B67; text-align: center;">
                                     <h4 class="modal-title" style="margin-bottom: 15px;"/>
                                     <button type="button" class="btn btn-secondary" id="dismiss">Close</button>
                                 </div>

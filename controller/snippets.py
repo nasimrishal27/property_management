@@ -5,11 +5,13 @@ class WebsiteProduct(http.Controller):
     @http.route('/get_latest_properties', auth="public", type='json', website=True)
     def get_latest_property(self):
         """Get the latest property for the snippet."""
+        currency_symbol = request.env.company.currency_id.symbol
         latest_property = request.env['property.property'].sudo().search_read(
             [('active', '=', True)], fields=['name', 'image', 'id', 'rent_amount', 'lease_amount'], order='create_date desc'
         )
         values = {
             'properties': latest_property,
+            'currency_symbol': currency_symbol,
         }
         return values
 
