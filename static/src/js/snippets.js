@@ -12,16 +12,21 @@ function chunkArray(array, size) {
 }
 
 publicWidget.registry.get_property_tab = publicWidget.Widget.extend({
-    selector : '.properties_section',
+    selector: '.properties_section',
+
     async willStart() {
         const result = await rpc('/get_latest_properties', {});
-        if(result && result.properties){
+        if (result?.properties?.length) {
             const chunks = chunkArray(result.properties, 4);
-            chunks[0].is_active = true
-            this.$target.empty().html(renderToElement('property_management.property_data', {
+            chunks[0].is_active = true;
+            const uniq = Date.now();
+            const html = await renderToElement('property_management.property_data', {
                 property_chunks: chunks,
                 currency_symbol: result.currency_symbol,
-            }));
+                uniq: uniq,
+            });
+            this.el.innerHTML = '';
+            this.el.appendChild(html);
         }
     },
 });

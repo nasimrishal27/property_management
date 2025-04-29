@@ -15,7 +15,7 @@
               name="Latest Property Snippet">
         <xpath expr="//snippets[@id='snippet_groups']" position="inside">
             <t t-snippet="property_management.property_snippet_template_property"
-               t-thumbnail="/property_management/static/src/img/snippets/s_dynamic_products.svg"/>
+               t-thumbnail="/property_management/static/src/img/snippets/s_latest_properties.svg"/>
         </xpath>
     </template>
     <template id="property_details">
@@ -24,8 +24,9 @@
             <div class="oe_structure"/>
             <div class="oe_structure">
                 <div class="container">
+                    <i class="fa fa-arrow-left mt-3" style="cursor: pointer; transform: scaleX(1.5); font-size: 20px;" onclick="window.history.back();"></i>
                     <div class="container text-center">
-                        <h1 style="color: #714B67; margin-top: 20px">Rental/Lease Property</h1>
+                        <h1 style="color: #714B67; margin-top: 5px">Rental/Lease Property</h1>
                     </div>
                     <div class="row m-3 p-3">
                         <div class="col-sm-6">

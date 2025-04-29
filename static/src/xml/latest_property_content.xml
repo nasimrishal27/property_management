@@ -9,7 +9,7 @@
                     <h1 style="color: #714B67; margin-top: 20px">Rental/Lease Properties</h1>
                     <p>You can get everything you need for rent or lease here.</p>
                 </div>
-                <div id="property_carousel" class="container carousel slide" data-bs-ride="carousel" t-att-data-bs-interval="interval">
+                <div t-attf-id="property_carousel{{uniq}}" class="container carousel slide" data-bs-ride="carousel" t-att-data-bs-interval="interval">
                     <div class="carousel-inner row w-100 mx-auto" role="listbox">
                         <t t-foreach="property_chunks" t-as="chunk" t-key="chunk.id">
                             <div t-att-class="chunk.is_active ? 'carousel-item active' : 'carousel-item'">
@@ -22,14 +22,12 @@
                                                     <t t-if="property.image">
                                                         <img t-att-src="'data:image/png;base64,' + property.image"
                                                              class="card-img-top"
-                                                             t-att-alt="property.name or 'Property Image'"
-                                                             loading="lazy" style="height: 160px;"/>
+                                                             t-att-alt="property.name or 'Property Image'" style="height: 160px;"/>
                                                     </t>
                                                     <t t-else="">
                                                         <img src="/property_management/static/src/img/image.jpeg"
                                                              class="card-img-top"
-                                                             alt="Default Property Image"
-                                                             loading="lazy" style="height: 160px;"/>
+                                                             alt="Default Property Image" style="height: 160px;"/>
                                                     </t>
                                                     <div class="card-body p-2">
                                                         <b><h5 class="card-title" t-esc="property.name"/></b>
@@ -45,11 +43,11 @@
                                     </t>
                                 </div>
                             </div>
-                            <a t-attf-href="#property_carousel" class="carousel-control-prev" data-bs-slide="prev"
+                            <a t-attf-href="#property_carousel{{uniq}}" class="carousel-control-prev" data-bs-slide="prev"
                                role="button" aria-label="Previous" title="Previous">
                                 <span class="fa fa-chevron-circle-left fa-2x" style="color:black"/>
                             </a>
-                            <a t-attf-href="#property_carousel" class="carousel-control-next" data-bs-slide="next"
+                            <a t-attf-href="#property_carousel{{uniq}}" class="carousel-control-next" data-bs-slide="next"
                                role="button" aria-label="Next" title="Next">
                                 <span class="fa fa-chevron-circle-right fa-2x" style="color:black"/>
                             </a>
