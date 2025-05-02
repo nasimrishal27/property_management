@@ -35,7 +35,7 @@
                                         </label>
                                         <div class="col-sm">
                                             <input id="tenant_name" type="text" class="form-control s_website_form_input"
-                                                   name="tenant_name" t-att-value="request.env.user.name" required="1"/>
+                                                   name="tenant_name" t-att-value="request.env.user.name" required="1" readonly="1"/>
                                         </div>
                                     </div>
                                 </div>
@@ -64,7 +64,7 @@
                                         </label>
                                         <div class="col-sm">
                                             <input id="phone" type="text" class="form-control s_website_form_input"
-                                                   name="phone" t-att-value="request.env.user.phone"/>
+                                                   name="phone" t-att-value="request.env.user.phone" readonly="1"/>
                                         </div>
                                     </div>
                                 </div>
@@ -90,7 +90,7 @@
                                         </label>
                                         <div class="col-sm">
                                             <input id="email" type="email" class="form-control s_website_form_input"
-                                                   name="email" t-att-value="request.env.user.email"/>
+                                                   name="email" t-att-value="request.env.user.email" readonly="1"/>
                                         </div>
                                     </div>
                                 </div>
